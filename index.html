@@ -34,6 +34,31 @@
     margin-top: 8px;
   }
   .container { max-width: 900px; margin: 0 auto; }
+  .loading {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6b7280;
+  }
+  .loading .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #1f2937;
+    border-top-color: #00d4ff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  .error {
+    background: #7f1d1d;
+    color: #fca5a5;
+    padding: 16px;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 14px;
+  }
   .league {
     background: #111827;
     border: 1px solid #1f2937;
@@ -55,11 +80,13 @@
     border-radius: 12px;
     padding: 16px;
     margin-bottom: 10px;
+  }
+  .match:last-child { margin-bottom: 0; }
+  .match-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  .match:last-child { margin-bottom: 0; }
   .teams { flex: 1; }
   .team {
     font-size: 15px;
@@ -84,73 +111,113 @@
   .status.upcoming { background: #1e3a5f; color: #60a5fa; }
   .status.live { background: #7f1d1d; color: #fca5a5; }
   .status.ft { background: #1f2937; color: #9ca3af; }
-  .score {
-    font-size: 18px;
-    font-weight: 800;
-    color: #00d4ff;
-    margin-top: 4px;
-  }
-  .prediction {
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid #1f2937;
+  .date {
     font-size: 12px;
     color: #6b7280;
+    margin-top: 4px;
   }
-  .prediction span { color: #7c3aed; font-weight: 700; }
+  .stats {
+    text-align: center;
+    padding: 20px;
+    color: #6b7280;
+    font-size: 13px;
+    margin-top: 20px;
+  }
 </style>
 </head>
 <body>
 <div class="container">
   <div class="header">
     <h1>⚽ JADWAL & PREDIKSI</h1>
-    <p>Jadwal & prediksi pertandingan terbaru</p>
+    <p>Data pertandingan terbaru</p>
   </div>
 
-  <div class="league">
-    <div class="league-title">🏴󠁧󠁢󠁥󠁮󠁧󠁿 PREMIER LEAGUE</div>
-    <div class="match">
-      <div class="teams">
-        <div class="team">Manchester City</div>
-        <div class="team">Liverpool</div>
-      </div>
-      <div class="match-info">
-        <div class="status upcoming">Upcoming</div>
-        <div>Hari ini, 22:00 WIB</div>
-      </div>
-    </div>
-    <div class="prediction">
-      Prediksi Skor: <span>2 - 1</span>
-    </div>
-    <div class="match">
-      <div class="teams">
-        <div class="team">Arsenal</div>
-        <div class="team">Chelsea</div>
-      </div>
-      <div class="match-info">
-        <div class="status ft">FT</div>
-        <div class="score">2 - 1</div>
-      </div>
+  <div id="content">
+    <div class="loading">
+      <div class="spinner"></div>
+      <div>Memuat data pertandingan...</div>
     </div>
   </div>
 
-  <div class="league">
-    <div class="league-title">🇪🇸 LA LIGA</div>
-    <div class="match">
-      <div class="teams">
-        <div class="team">Real Madrid</div>
-        <div class="team">Barcelona</div>
-      </div>
-      <div class="match-info">
-        <div class="status live">🔴 Live</div>
-        <div class="score">1 - 1</div>
-      </div>
-    </div>
-    <div class="prediction">
-      Prediksi Skor: <span>2 - 2</span>
-    </div>
-  </div>
-
+  <div class="stats" id="stats"></div>
 </div>
+
+<script>
+  const WORKER_URL = "https://bola-api.rehantobing31.workers.dev";
+
+  async function loadMatches() {
+    const content = document.getElementById('content');
+    const stats = document.getElementById('stats');
+
+    try {
+      const response = await fetch(WORKER_URL);
+      const data = await response.json();
+
+      if (data.error) {
+        content.innerHTML = '<div class="error">⚠️ ' + data.error + '</div>';
+        return;
+      }
+
+      const events = data.results || [];
+
+      if (events.length === 0) {
+        content.innerHTML = '<div class="error">Belum ada data pertandingan.</div>';
+        return;
+      }
+
+      let html = '';
+
+      events.slice(0, 30).forEach(function(event) {
+        const status = event.status || 'upcoming';
+        let statusLabel = 'Upcoming';
+        let statusClass = 'upcoming';
+
+        if (status === 'live' || status === 'inprogress') {
+          statusLabel = '🔴 Live';
+          statusClass = 'live';
+        } else if (status === 'finished' || status === 'ft') {
+          statusLabel = 'FT';
+          statusClass = 'ft';
+        }
+
+        let dateStr = '';
+        if (event.event_date) {
+          const d = new Date(event.event_date);
+          dateStr = d.toLocaleDateString('id-ID', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+        }
+
+        html += '<div class="match">';
+        html += '<div class="match-row">';
+        html += '<div class="teams">';
+        html += '<div class="team">' + (event.home_team || 'TBD') + '</div>';
+        html += '<div class="team">' + (event.away_team || 'TBD') + '</div>';
+        html += '</div>';
+        html += '<div class="match-info">';
+        html += '<div class="status ' + statusClass + '">' + statusLabel + '</div>';
+        html += '<div class="date">' + dateStr + '</div>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+      });
+
+      content.innerHTML = '<div class="league">' +
+        '<div class="league-title">⚽ PERTANDINGAN TERBARU</div>' +
+        html + '</div>';
+
+      stats.textContent = 'Total ' + (data.count || events.length) + ' pertandingan tersedia';
+
+    } catch (error) {
+      content.innerHTML = '<div class="error">⚠️ Gagal memuat data: ' + error.message + '</div>';
+    }
+  }
+
+  loadMatches();
+</script>
 </body>
 </html>
