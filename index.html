@@ -3,221 +3,367 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jadwal & Prediksi Bola</title>
+<title>JadwalBolaPrediksi - Jadwal & Prediksi Bola Terbaru</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0f0a0a;
+    --bg-card: #1a1212;
+    --bg-card-hover: #241818;
+    --red: #ff3b30;
+    --orange: #ff9500;
+    --text: #f5f0eb;
+    --text-dim: #8a7f7a;
+    --border: #2a1f1f;
+  }
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: #0a0e1a;
-    color: #e8eaf0;
+    background: var(--bg);
+    color: var(--text);
     min-height: 100vh;
-    padding: 20px;
+    line-height: 1.5;
   }
   .header {
-    text-align: center;
-    padding: 30px 20px;
-    border-bottom: 1px solid #1e2536;
-    margin-bottom: 30px;
+    background: linear-gradient(180deg, #1a0f0f 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
   }
-  .header h1 {
-    font-size: 28px;
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .brand-logo {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+  }
+  .brand-text h1 {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    color: var(--text);
+    line-height: 1.1;
+  }
+  .brand-text p {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+  .nav {
+    display: flex;
+    gap: 8px;
+  }
+  .nav a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+  .nav a:hover, .nav a.active {
+    background: var(--red);
+    color: white;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+  .hero {
+    background: linear-gradient(135deg, #2a0f0f 0%, #1a0a0a 100%);
+    border: 1px solid #3a1f1f;
+    border-radius: 20px;
+    padding: 32px 28px;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255,59,48,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero-label {
+    display: inline-block;
+    background: rgba(255,149,0,0.15);
+    color: var(--orange);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+  }
+  .hero h2 {
+    font-size: 32px;
     font-weight: 800;
     letter-spacing: -0.5px;
-    background: linear-gradient(135deg, #00d4ff, #7c3aed);
+    margin-bottom: 8px;
+    position: relative;
+  }
+  .hero h2 span {
+    background: linear-gradient(135deg, var(--red), var(--orange));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  .header p {
-    color: #6b7280;
+  .hero p {
+    color: var(--text-dim);
     font-size: 14px;
-    margin-top: 8px;
+    max-width: 500px;
+    position: relative;
   }
-  .container { max-width: 900px; margin: 0 auto; }
-  .loading {
-    text-align: center;
-    padding: 60px 20px;
-    color: #6b7280;
+  .hero-stats {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+    position: relative;
   }
-  .loading .spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid #1f2937;
-    border-top-color: #00d4ff;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 20px;
-  }
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-  .error {
-    background: #7f1d1d;
-    color: #fca5a5;
-    padding: 16px;
+  .stat {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
     border-radius: 12px;
-    text-align: center;
-    font-size: 14px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
-  .league {
-    background: #111827;
-    border: 1px solid #1f2937;
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-  .league-title {
+  .stat-icon {
     font-size: 16px;
-    font-weight: 700;
-    color: #00d4ff;
+  }
+  .stat-num {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--red);
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .section-title {
+    font-size: 18px;
+    font-weight: 800;
     margin-bottom: 16px;
     display: flex;
     align-items: center;
     gap: 8px;
   }
-  .match {
-    background: #0a0e1a;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 10px;
+  .section-title::before {
+    content: '';
+    width: 4px;
+    height: 20px;
+    background: linear-gradient(180deg, var(--red), var(--orange));
+    border-radius: 2px;
   }
-  .match:last-child { margin-bottom: 0; }
+  .hot-scroll {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+    margin-bottom: 28px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--red) transparent;
+  }
+  .hot-scroll::-webkit-scrollbar {
+    height: 6px;
+  }
+  .hot-scroll::-webkit-scrollbar-thumb {
+    background: var(--red);
+    border-radius: 3px;
+  }
+  .hot-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    min-width: 260px;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .hot-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--red);
+    transform: translateY(-2px);
+  }
+  .hot-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--red), var(--orange));
+    color: white;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+  }
+  .hot-league {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .hot-teams {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .hot-team {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .team-logo {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--red), var(--orange));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    color: white;
+    flex-shrink: 0;
+  }
+  .team-name {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .hot-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .status-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+  }
+  .status-upcoming { background: rgba(255,149,0,0.15); color: var(--orange); }
+  .status-live { background: rgba(255,59,48,0.2); color: var(--red); animation: pulse 1.5s infinite; }
+  .status-ft { background: rgba(138,127,122,0.2); color: var(--text-dim); }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+  .loading {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-dim);
+  }
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--red);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .error {
+    background: rgba(255,59,48,0.1);
+    border: 1px solid var(--red);
+    color: var(--red);
+    padding: 16px;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 14px;
+  }
+  .league-group {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .league-header {
+    background: rgba(255,59,48,0.08);
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+  }
   .match-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
   }
-  .teams { flex: 1; }
-  .team {
-    font-size: 15px;
+  .match-row:last-child { border-bottom: none; }
+  .match-row:hover { background: var(--bg-card-hover); }
+  .match-teams {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .match-team {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .match-team .team-logo {
+    width: 26px;
+    height: 26px;
+    font-size: 10px;
+  }
+  .match-team .team-name {
+    font-size: 14px;
     font-weight: 600;
-    margin-bottom: 4px;
   }
-  .team:last-child { margin-bottom: 0; }
   .match-info {
     text-align: right;
-    font-size: 13px;
-    color: #6b7280;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-end;
   }
-  .status {
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .status.upcoming { background: #1e3a5f; color: #60a5fa; }
-  .status.live { background: #7f1d1d; color: #fca5a5; }
-  .status.ft { background: #1f2937; color: #9ca3af; }
-  .date {
+  .match-time {
     font-size: 12px;
-    color: #6b7280;
-    margin-top: 4px;
+    color: var(--text-dim);
   }
-  .stats {
-    text-align: center;
-    padding: 20px;
-    color: #6b7280;
-    font-size: 13px;
-    margin-top: 20px;
+  .match-score {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--red);
   }
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="header">
-    <h1>⚽ JADWAL & PREDIKSI</h1>
-    <p>Data pertandingan terbaru</p>
-  </div>
-
-  <div id="content">
-    <div class="loading">
-      <div class="spinner"></div>
-      <div>Memuat data pertandingan...</div>
-    </div>
-  </div>
-
-  <div class="stats" id="stats"></div>
-</div>
-
-<script>
-  const WORKER_URL = "https://bola-api.rehantobing31.workers.dev";
-
-  async function loadMatches() {
-    const content = document.getElementById('content');
-    const stats = document.getElementById('stats');
-
-    try {
-      const response = await fetch(WORKER_URL);
-      const data = await response.json();
-
-      if (data.error) {
-        content.innerHTML = '<div class="error">⚠️ ' + data.error + '</div>';
-        return;
-      }
-
-      const events = data.results || [];
-
-      if (events.length === 0) {
-        content.innerHTML = '<div class="error">Belum ada data pertandingan.</div>';
-        return;
-      }
-
-      let html = '';
-
-      events.slice(0, 30).forEach(function(event) {
-        const status = event.status || 'upcoming';
-        let statusLabel = 'Upcoming';
-        let statusClass = 'upcoming';
-
-        if (status === 'live' || status === 'inprogress') {
-          statusLabel = '🔴 Live';
-          statusClass = 'live';
-        } else if (status === 'finished' || status === 'ft') {
-          statusLabel = 'FT';
-          statusClass = 'ft';
-        }
-
-        let dateStr = '';
-        if (event.event_date) {
-          const d = new Date(event.event_date);
-          dateStr = d.toLocaleDateString('id-ID', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-          });
-        }
-
-        html += '<div class="match">';
-        html += '<div class="match-row">';
-        html += '<div class="teams">';
-        html += '<div class="team">' + (event.home_team || 'TBD') + '</div>';
-        html += '<div class="team">' + (event.away_team || 'TBD') + '</div>';
-        html += '</div>';
-        html += '<div class="match-info">';
-        html += '<div class="status ' + statusClass + '">' + statusLabel + '</div>';
-        html += '<div class="date">' + dateStr + '</div>';
-        html += '</div>';
-        html += '</div>';
-        html += '</div>';
-      });
-
-      content.innerHTML = '<div class="league">' +
-        '<div class="league-title">⚽ PERTANDINGAN TERBARU</div>' +
-        html + '</div>';
-
-      stats.textContent = 'Total ' + (data.count || events.length) + ' pertandingan tersedia';
-
-    } catch (error) {
-      content.innerHTML = '<div class="error">⚠️ Gagal memuat data: ' + error.message + '</div>';
-    }
-  }
-
-  loadMatches();
-</script>
-</body>
-</html>
