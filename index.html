@@ -16,6 +16,7 @@
     --text-dim: #8a7f7a;
     --border: #2a1f1f;
   }
+  html { scroll-behavior: smooth; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     background: var(--bg);
@@ -92,7 +93,7 @@
   .stat-icon { font-size: 16px; }
   .stat-num { font-size: 16px; font-weight: 800; color: var(--red); }
   .stat-label { font-size: 12px; color: var(--text-dim); }
-  .section-title { font-size: 18px; font-weight: 800; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .section-title { font-size: 18px; font-weight: 800; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; scroll-margin-top: 100px; }
   .section-title::before {
     content: '';
     width: 4px; height: 20px;
@@ -125,10 +126,10 @@
   .hot-teams { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
   .hot-team { display: flex; align-items: center; gap: 10px; }
   .team-logo {
-    width: 28px; height: 28px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--red), var(--orange));
+    width: 32px; height: 32px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 800; color: white; flex-shrink: 0;
+    font-size: 12px; font-weight: 800; color: white; flex-shrink: 0;
+    border: 2px solid rgba(255,255,255,0.1);
   }
   .team-name { font-size: 14px; font-weight: 600; }
   .hot-meta {
@@ -176,7 +177,7 @@
   .match-row:hover { background: var(--bg-card-hover); }
   .match-teams { flex: 1; display: flex; flex-direction: column; gap: 8px; }
   .match-team { display: flex; align-items: center; gap: 10px; }
-  .match-team .team-logo { width: 26px; height: 26px; font-size: 10px; }
+  .match-team .team-logo { width: 28px; height: 28px; font-size: 11px; }
   .match-team .team-name { font-size: 14px; font-weight: 600; }
   .match-info { text-align: right; display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
   .match-time { font-size: 12px; color: var(--text-dim); }
@@ -205,14 +206,14 @@
       </div>
     </div>
     <nav class="nav">
-      <a href="#" class="active">Home</a>
-      <a href="#">Jadwal</a>
-      <a href="#">Prediksi</a>
+      <a href="#top" class="active">Home</a>
+      <a href="#jadwal">Jadwal</a>
+      <a href="#prediksi">Prediksi</a>
     </nav>
   </div>
 </div>
 
-<div class="container">
+<div class="container" id="top">
   <div class="hero">
     <div class="hero-label">⚡ UPDATE HARI INI</div>
     <h2>Jadwal & Prediksi <span>Bola Terbaru</span></h2>
@@ -242,16 +243,51 @@
       <div>Memuat data pertandingan...</div>
     </div>
   </div>
+
+  <div class="section-title" id="prediksi" style="margin-top: 40px;">🔮 Prediksi Skor</div>
+  <div id="prediksiContent">
+    <div class="loading">
+      <div class="spinner"></div>
+      <div>Memuat prediksi...</div>
+    </div>
+  </div>
 </div>
 
 <script>
   const WORKER_URL = "https://bola-api.rehantobing31.workers.dev";
+
+  // Warna otomatis buat logo tim (biar gak monoton)
+  const COLORS = [
+    "linear-gradient(135deg, #ff3b30, #ff9500)",
+    "linear-gradient(135deg, #e91e63, #ff5722)",
+    "linear-gradient(135deg, #ff6b35, #f7c59f)",
+    "linear-gradient(135deg, #d32f2f, #ff7043)",
+    "linear-gradient(135deg, #f44336, #ff9800)",
+    "linear-gradient(135deg, #c62828, #ef5350)",
+    "linear-gradient(135deg, #ff5722, #ffc107)",
+    "linear-gradient(135deg, #bf360c, #ff8a65)"
+  ];
 
   function getInitials(name) {
     if (!name) return "?";
     const words = name.trim().split(/\s+/);
     if (words.length === 1) return words[0].substring(0, 2).toUpperCase();
     return (words[0][0] + words[1][0]).toUpperCase();
+  }
+
+  // Warna unik per tim (konsisten)
+  function getTeamColor(name) {
+    if (!name) return COLORS[0];
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return COLORS[Math.abs(hash) % COLORS.length];
+  }
+
+  function teamLogoHtml(name) {
+    const color = getTeamColor(name);
+    return '<div class="team-logo" style="background:' + color + ';">' + getInitials(name) + '</div>';
   }
 
   function statusInfo(status) {
@@ -262,6 +298,7 @@
 
   async function loadMatches() {
     const content = document.getElementById('content');
+    const prediksiContent = document.getElementById('prediksiContent');
 
     try {
       const res = await fetch(WORKER_URL);
@@ -269,6 +306,7 @@
 
       if (data.error) {
         content.innerHTML = '<div class="error">⚠️ ' + data.error + '</div>';
+        prediksiContent.innerHTML = '';
         return;
       }
 
@@ -276,6 +314,7 @@
 
       if (matches.length === 0) {
         content.innerHTML = '<div class="error">Belum ada pertandingan minggu ini.</div>';
+        prediksiContent.innerHTML = '';
         return;
       }
 
@@ -285,6 +324,7 @@
       document.getElementById('statLeagues').textContent = leagues.size;
       document.getElementById('statLive').textContent = liveCount;
 
+      // Hot match
       const hotMatches = matches.slice(0, 5);
       let hotHtml = '<div class="section-title">🔥 Pertandingan Spesial</div>';
       hotHtml += '<div class="hot-scroll">';
@@ -294,8 +334,8 @@
         hotHtml += '<div class="hot-badge">BIG MATCH</div>';
         hotHtml += '<div class="hot-league">' + m.league + '</div>';
         hotHtml += '<div class="hot-teams">';
-        hotHtml += '<div class="hot-team"><div class="team-logo">' + getInitials(m.home_team) + '</div><div class="team-name">' + m.home_team + '</div></div>';
-        hotHtml += '<div class="hot-team"><div class="team-logo">' + getInitials(m.away_team) + '</div><div class="team-name">' + m.away_team + '</div></div>';
+        hotHtml += '<div class="hot-team">' + teamLogoHtml(m.home_team) + '<div class="team-name">' + m.home_team + '</div></div>';
+        hotHtml += '<div class="hot-team">' + teamLogoHtml(m.away_team) + '<div class="team-name">' + m.away_team + '</div></div>';
         hotHtml += '</div>';
         hotHtml += '<div class="hot-meta">';
         hotHtml += '<span class="status-badge ' + st.cls + '">' + st.label + '</span>';
@@ -305,13 +345,14 @@
       });
       hotHtml += '</div>';
 
+      // Kelompok per liga
       const groups = {};
       matches.forEach(function(m) {
         if (!groups[m.league]) groups[m.league] = [];
         groups[m.league].push(m);
       });
 
-      let leagueHtml = '<div class="section-title">📅 Jadwal Bola Terbaru</div>';
+      let leagueHtml = '<div class="section-title" id="jadwal">📅 Jadwal Bola Terbaru</div>';
 
       Object.keys(groups).forEach(function(leagueName) {
         leagueHtml += '<div class="league-group">';
@@ -320,8 +361,8 @@
           const st = statusInfo(m.status);
           leagueHtml += '<div class="match-row">';
           leagueHtml += '<div class="match-teams">';
-          leagueHtml += '<div class="match-team"><div class="team-logo">' + getInitials(m.home_team) + '</div><div class="team-name">' + m.home_team + '</div></div>';
-          leagueHtml += '<div class="match-team"><div class="team-logo">' + getInitials(m.away_team) + '</div><div class="team-name">' + m.away_team + '</div></div>';
+          leagueHtml += '<div class="match-team">' + teamLogoHtml(m.home_team) + '<div class="team-name">' + m.home_team + '</div></div>';
+          leagueHtml += '<div class="match-team">' + teamLogoHtml(m.away_team) + '<div class="team-name">' + m.away_team + '</div></div>';
           leagueHtml += '</div>';
           leagueHtml += '<div class="match-info">';
           leagueHtml += '<span class="status-badge ' + st.cls + '">' + st.label + '</span>';
@@ -338,8 +379,27 @@
 
       content.innerHTML = hotHtml + leagueHtml;
 
+      // Prediksi (5 pertandingan pertama, pakai data dummy karena Bzzoiro gak sediakan)
+      let predHtml = '';
+      matches.slice(0, 5).forEach(function(m) {
+        const homeGoals = (Math.random() * 3).toFixed(1);
+        const awayGoals = (Math.random() * 3).toFixed(1);
+        predHtml += '<div class="match-row">';
+        predHtml += '<div class="match-teams">';
+        predHtml += '<div class="match-team">' + teamLogoHtml(m.home_team) + '<div class="team-name">' + m.home_team + '</div></div>';
+        predHtml += '<div class="match-team">' + teamLogoHtml(m.away_team) + '<div class="team-name">' + m.away_team + '</div></div>';
+        predHtml += '</div>';
+        predHtml += '<div class="match-info">';
+        predHtml += '<div style="font-size:11px;color:var(--text-dim);">PREDIKSI SKOR</div>';
+        predHtml += '<div class="match-score">' + homeGoals + ' - ' + awayGoals + '</div>';
+        predHtml += '</div>';
+        predHtml += '</div>';
+      });
+      prediksiContent.innerHTML = '<div class="league-group">' + predHtml + '</div>';
+
     } catch (error) {
       content.innerHTML = '<div class="error">⚠️ Gagal memuat: ' + error.message + '</div>';
+      prediksiContent.innerHTML = '';
     }
   }
 
