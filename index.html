@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jadwal & Prediksi Bola</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0a0e1a;
+    color: #e8eaf0;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .header {
+    text-align: center;
+    padding: 30px 20px;
+    border-bottom: 1px solid #1e2536;
+    margin-bottom: 30px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #00d4ff, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .header p {
+    color: #6b7280;
+    font-size: 14px;
+    margin-top: 8px;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+  .league {
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .league-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #00d4ff;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .match {
+    background: #0a0e1a;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .match:last-child { margin-bottom: 0; }
+  .teams { flex: 1; }
+  .team {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .team:last-child { margin-bottom: 0; }
+  .match-info {
+    text-align: right;
+    font-size: 13px;
+    color: #6b7280;
+  }
+  .status {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .status.upcoming { background: #1e3a5f; color: #60a5fa; }
+  .status.live { background: #7f1d1d; color: #fca5a5; }
+  .status.ft { background: #1f2937; color: #9ca3af; }
+  .score {
+    font-size: 18px;
+    font-weight: 800;
+    color: #00d4ff;
+    margin-top: 4px;
+  }
+  .prediction {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #1f2937;
+    font-size: 12px;
+    color: #6b7280;
+  }
+  .prediction span { color: #7c3aed; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>⚽ JADWAL & PREDIKSI</h1>
+    <p>Jadwal & prediksi pertandingan terbaru</p>
+  </div>
+
+  <div class="league">
+    <div class="league-title">🏴󠁧󠁢󠁥󠁮󠁧󠁿 PREMIER LEAGUE</div>
+    <div class="match">
+      <div class="teams">
+        <div class="team">Manchester City</div>
+        <div class="team">Liverpool</div>
+      </div>
+      <div class="match-info">
+        <div class="status upcoming">Upcoming</div>
+        <div>Hari ini, 22:00 WIB</div>
+      </div>
+    </div>
+    <div class="prediction">
+      Prediksi Skor: <span>2 - 1</span>
+    </div>
+    <div class="match">
+      <div class="teams">
+        <div class="team">Arsenal</div>
+        <div class="team">Chelsea</div>
+      </div>
+      <div class="match-info">
+        <div class="status ft">FT</div>
+        <div class="score">2 - 1</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="league">
+    <div class="league-title">🇪🇸 LA LIGA</div>
+    <div class="match">
+      <div class="teams">
+        <div class="team">Real Madrid</div>
+        <div class="team">Barcelona</div>
+      </div>
+      <div class="match-info">
+        <div class="status live">🔴 Live</div>
+        <div class="score">1 - 1</div>
+      </div>
+    </div>
+    <div class="prediction">
+      Prediksi Skor: <span>2 - 2</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
