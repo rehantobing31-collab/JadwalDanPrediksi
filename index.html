@@ -41,50 +41,14 @@
     gap: 16px;
     flex-wrap: wrap;
   }
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .brand-logo {
-    width: 42px;
-    height: 42px;
-    flex-shrink: 0;
-  }
-  .brand-text h1 {
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: -0.3px;
-    color: var(--text);
-    line-height: 1.1;
-  }
-  .brand-text p {
-    font-size: 11px;
-    color: var(--text-dim);
-    margin-top: 2px;
-  }
-  .nav {
-    display: flex;
-    gap: 8px;
-  }
-  .nav a {
-    color: var(--text-dim);
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
-    padding: 8px 16px;
-    border-radius: 8px;
-    transition: all 0.2s;
-  }
-  .nav a:hover, .nav a.active {
-    background: var(--red);
-    color: white;
-  }
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 24px 20px 60px;
-  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand-logo { width: 42px; height: 42px; flex-shrink: 0; }
+  .brand-text h1 { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; color: var(--text); line-height: 1.1; }
+  .brand-text p { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+  .nav { display: flex; gap: 8px; }
+  .nav a { color: var(--text-dim); text-decoration: none; font-size: 14px; font-weight: 600; padding: 8px 16px; border-radius: 8px; transition: all 0.2s; }
+  .nav a:hover, .nav a.active { background: var(--red); color: white; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px 20px 60px; }
   .hero {
     background: linear-gradient(135deg, #2a0f0f 0%, #1a0a0a 100%);
     border: 1px solid #3a1f1f;
@@ -97,10 +61,8 @@
   .hero::before {
     content: '';
     position: absolute;
-    top: -50%;
-    right: -10%;
-    width: 300px;
-    height: 300px;
+    top: -50%; right: -10%;
+    width: 300px; height: 300px;
     background: radial-gradient(circle, rgba(255,59,48,0.15) 0%, transparent 70%);
     border-radius: 50%;
   }
@@ -108,262 +70,280 @@
     display: inline-block;
     background: rgba(255,149,0,0.15);
     color: var(--orange);
-    font-size: 11px;
-    font-weight: 700;
-    padding: 4px 12px;
-    border-radius: 20px;
-    letter-spacing: 0.5px;
-    margin-bottom: 12px;
+    font-size: 11px; font-weight: 700;
+    padding: 4px 12px; border-radius: 20px;
+    letter-spacing: 0.5px; margin-bottom: 12px;
   }
-  .hero h2 {
-    font-size: 32px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    margin-bottom: 8px;
-    position: relative;
-  }
+  .hero h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; position: relative; }
   .hero h2 span {
     background: linear-gradient(135deg, var(--red), var(--orange));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  .hero p {
-    color: var(--text-dim);
-    font-size: 14px;
-    max-width: 500px;
-    position: relative;
-  }
-  .hero-stats {
-    display: flex;
-    gap: 12px;
-    margin-top: 24px;
-    flex-wrap: wrap;
-    position: relative;
-  }
+  .hero p { color: var(--text-dim); font-size: 14px; max-width: 500px; position: relative; }
+  .hero-stats { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; position: relative; }
   .stat {
     background: rgba(255,255,255,0.05);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    border-radius: 12px; padding: 10px 16px;
+    display: flex; align-items: center; gap: 8px;
   }
-  .stat-icon {
-    font-size: 16px;
-  }
-  .stat-num {
-    font-size: 16px;
-    font-weight: 800;
-    color: var(--red);
-  }
-  .stat-label {
-    font-size: 12px;
-    color: var(--text-dim);
-  }
-  .section-title {
-    font-size: 18px;
-    font-weight: 800;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+  .stat-icon { font-size: 16px; }
+  .stat-num { font-size: 16px; font-weight: 800; color: var(--red); }
+  .stat-label { font-size: 12px; color: var(--text-dim); }
+  .section-title { font-size: 18px; font-weight: 800; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
   .section-title::before {
     content: '';
-    width: 4px;
-    height: 20px;
+    width: 4px; height: 20px;
     background: linear-gradient(180deg, var(--red), var(--orange));
     border-radius: 2px;
   }
   .hot-scroll {
-    display: flex;
-    gap: 14px;
-    overflow-x: auto;
-    padding-bottom: 12px;
-    margin-bottom: 28px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--red) transparent;
+    display: flex; gap: 14px;
+    overflow-x: auto; padding-bottom: 12px; margin-bottom: 28px;
+    scrollbar-width: thin; scrollbar-color: var(--red) transparent;
   }
-  .hot-scroll::-webkit-scrollbar {
-    height: 6px;
-  }
-  .hot-scroll::-webkit-scrollbar-thumb {
-    background: var(--red);
-    border-radius: 3px;
-  }
+  .hot-scroll::-webkit-scrollbar { height: 6px; }
+  .hot-scroll::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
   .hot-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 16px;
-    min-width: 260px;
-    flex-shrink: 0;
+    border-radius: 14px; padding: 16px;
+    min-width: 260px; flex-shrink: 0;
     transition: all 0.2s;
   }
-  .hot-card:hover {
-    background: var(--bg-card-hover);
-    border-color: var(--red);
-    transform: translateY(-2px);
-  }
+  .hot-card:hover { background: var(--bg-card-hover); border-color: var(--red); transform: translateY(-2px); }
   .hot-badge {
     display: inline-block;
     background: linear-gradient(135deg, var(--red), var(--orange));
-    color: white;
-    font-size: 10px;
-    font-weight: 800;
-    padding: 3px 10px;
-    border-radius: 20px;
-    letter-spacing: 0.5px;
-    margin-bottom: 12px;
+    color: white; font-size: 10px; font-weight: 800;
+    padding: 3px 10px; border-radius: 20px;
+    letter-spacing: 0.5px; margin-bottom: 12px;
   }
-  .hot-league {
-    font-size: 11px;
-    color: var(--text-dim);
-    margin-bottom: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-  }
-  .hot-teams {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-  .hot-team {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+  .hot-league { font-size: 11px; color: var(--text-dim); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.3px; }
+  .hot-teams { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+  .hot-team { display: flex; align-items: center; gap: 10px; }
   .team-logo {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
+    width: 28px; height: 28px; border-radius: 50%;
     background: linear-gradient(135deg, var(--red), var(--orange));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 800;
-    color: white;
-    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; color: white; flex-shrink: 0;
   }
-  .team-name {
-    font-size: 14px;
-    font-weight: 600;
-  }
+  .team-name { font-size: 14px; font-weight: 600; }
   .hot-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 12px;
-    border-top: 1px solid var(--border);
-    font-size: 12px;
-    color: var(--text-dim);
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 12px; border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--text-dim);
   }
   .status-badge {
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.3px;
+    display: inline-block; padding: 3px 10px; border-radius: 20px;
+    font-size: 10px; font-weight: 800; letter-spacing: 0.3px;
   }
   .status-upcoming { background: rgba(255,149,0,0.15); color: var(--orange); }
   .status-live { background: rgba(255,59,48,0.2); color: var(--red); animation: pulse 1.5s infinite; }
   .status-ft { background: rgba(138,127,122,0.2); color: var(--text-dim); }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.6; }
-  }
-  .loading {
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--text-dim);
-  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+  .loading { text-align: center; padding: 60px 20px; color: var(--text-dim); }
   .spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid var(--border);
-    border-top-color: var(--red);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+    width: 40px; height: 40px;
+    border: 3px solid var(--border); border-top-color: var(--red);
+    border-radius: 50%; animation: spin 1s linear infinite;
     margin: 0 auto 20px;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
   .error {
     background: rgba(255,59,48,0.1);
-    border: 1px solid var(--red);
-    color: var(--red);
-    padding: 16px;
-    border-radius: 12px;
-    text-align: center;
-    font-size: 14px;
+    border: 1px solid var(--red); color: var(--red);
+    padding: 16px; border-radius: 12px; text-align: center; font-size: 14px;
   }
   .league-group {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 14px;
-    margin-bottom: 16px;
-    overflow: hidden;
+    border-radius: 14px; margin-bottom: 16px; overflow: hidden;
   }
   .league-header {
     background: rgba(255,59,48,0.08);
-    padding: 12px 16px;
-    font-size: 13px;
-    font-weight: 800;
-    color: var(--orange);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid var(--border);
+    padding: 12px 16px; font-size: 13px; font-weight: 800;
+    color: var(--orange); text-transform: uppercase;
+    letter-spacing: 0.5px; border-bottom: 1px solid var(--border);
   }
   .match-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--border);
-    gap: 12px;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 16px; border-bottom: 1px solid var(--border); gap: 12px;
   }
   .match-row:last-child { border-bottom: none; }
   .match-row:hover { background: var(--bg-card-hover); }
-  .match-teams {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .match-team {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .match-team .team-logo {
-    width: 26px;
-    height: 26px;
-    font-size: 10px;
-  }
-  .match-team .team-name {
-    font-size: 14px;
-    font-weight: 600;
-  }
-  .match-info {
-    text-align: right;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    align-items: flex-end;
-  }
-  .match-time {
-    font-size: 12px;
-    color: var(--text-dim);
-  }
-  .match-score {
-    font-size: 16px;
-    font-weight: 800;
-    color: var(--red);
-  }
+  .match-teams { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .match-team { display: flex; align-items: center; gap: 10px; }
+  .match-team .team-logo { width: 26px; height: 26px; font-size: 10px; }
+  .match-team .team-name { font-size: 14px; font-weight: 600; }
+  .match-info { text-align: right; display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+  .match-time { font-size: 12px; color: var(--text-dim); }
+  .match-score { font-size: 16px; font-weight: 800; color: var(--red); }
 </style>
 </head>
 <body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="brand">
+      <svg class="brand-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ff3b30"/>
+            <stop offset="100%" stop-color="#ff9500"/>
+          </linearGradient>
+        </defs>
+        <circle cx="50" cy="50" r="45" fill="url(#g1)"/>
+        <circle cx="50" cy="50" r="30" fill="none" stroke="white" stroke-width="3" opacity="0.3"/>
+        <path d="M50 20 L60 40 L80 40 L65 55 L70 75 L50 62 L30 75 L35 55 L20 40 L40 40 Z" fill="white"/>
+      </svg>
+      <div class="brand-text">
+        <h1>JadwalBolaPrediksi</h1>
+        <p>Jadwal & Prediksi Bola Terbaru</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="#" class="active">Home</a>
+      <a href="#">Jadwal</a>
+      <a href="#">Prediksi</a>
+    </nav>
+  </div>
+</div>
+
+<div class="container">
+  <div class="hero">
+    <div class="hero-label">⚡ UPDATE HARI INI</div>
+    <h2>Jadwal & Prediksi <span>Bola Terbaru</span></h2>
+    <p>Temukan jadwal pertandingan dan prediksi skor dari berbagai liga dunia dalam satu tampilan.</p>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-icon">📅</span>
+        <span class="stat-num" id="statMatches">-</span>
+        <span class="stat-label">Jadwal</span>
+      </div>
+      <div class="stat">
+        <span class="stat-icon">🏆</span>
+        <span class="stat-num" id="statLeagues">-</span>
+        <span class="stat-label">Liga</span>
+      </div>
+      <div class="stat">
+        <span class="stat-icon">🔥</span>
+        <span class="stat-num" id="statLive">-</span>
+        <span class="stat-label">Live</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="content">
+    <div class="loading">
+      <div class="spinner"></div>
+      <div>Memuat data pertandingan...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const WORKER_URL = "https://bola-api.rehantobing31.workers.dev";
+
+  function getInitials(name) {
+    if (!name) return "?";
+    const words = name.trim().split(/\s+/);
+    if (words.length === 1) return words[0].substring(0, 2).toUpperCase();
+    return (words[0][0] + words[1][0]).toUpperCase();
+  }
+
+  function statusInfo(status) {
+    if (status === "LIVE") return { label: "🔴 LIVE", cls: "status-live" };
+    if (status === "FT") return { label: "FT", cls: "status-ft" };
+    return { label: "UPCOMING", cls: "status-upcoming" };
+  }
+
+  async function loadMatches() {
+    const content = document.getElementById('content');
+
+    try {
+      const res = await fetch(WORKER_URL);
+      const data = await res.json();
+
+      if (data.error) {
+        content.innerHTML = '<div class="error">⚠️ ' + data.error + '</div>';
+        return;
+      }
+
+      const matches = data.matches || [];
+
+      if (matches.length === 0) {
+        content.innerHTML = '<div class="error">Belum ada pertandingan minggu ini.</div>';
+        return;
+      }
+
+      const leagues = new Set(matches.map(function(m) { return m.league; }));
+      const liveCount = matches.filter(function(m) { return m.status === "LIVE"; }).length;
+      document.getElementById('statMatches').textContent = matches.length;
+      document.getElementById('statLeagues').textContent = leagues.size;
+      document.getElementById('statLive').textContent = liveCount;
+
+      const hotMatches = matches.slice(0, 5);
+      let hotHtml = '<div class="section-title">🔥 Pertandingan Spesial</div>';
+      hotHtml += '<div class="hot-scroll">';
+      hotMatches.forEach(function(m) {
+        const st = statusInfo(m.status);
+        hotHtml += '<div class="hot-card">';
+        hotHtml += '<div class="hot-badge">BIG MATCH</div>';
+        hotHtml += '<div class="hot-league">' + m.league + '</div>';
+        hotHtml += '<div class="hot-teams">';
+        hotHtml += '<div class="hot-team"><div class="team-logo">' + getInitials(m.home_team) + '</div><div class="team-name">' + m.home_team + '</div></div>';
+        hotHtml += '<div class="hot-team"><div class="team-logo">' + getInitials(m.away_team) + '</div><div class="team-name">' + m.away_team + '</div></div>';
+        hotHtml += '</div>';
+        hotHtml += '<div class="hot-meta">';
+        hotHtml += '<span class="status-badge ' + st.cls + '">' + st.label + '</span>';
+        hotHtml += '<span>' + m.kickoff + '</span>';
+        hotHtml += '</div>';
+        hotHtml += '</div>';
+      });
+      hotHtml += '</div>';
+
+      const groups = {};
+      matches.forEach(function(m) {
+        if (!groups[m.league]) groups[m.league] = [];
+        groups[m.league].push(m);
+      });
+
+      let leagueHtml = '<div class="section-title">📅 Jadwal Bola Terbaru</div>';
+
+      Object.keys(groups).forEach(function(leagueName) {
+        leagueHtml += '<div class="league-group">';
+        leagueHtml += '<div class="league-header">' + leagueName + ' (' + groups[leagueName].length + ')</div>';
+        groups[leagueName].slice(0, 10).forEach(function(m) {
+          const st = statusInfo(m.status);
+          leagueHtml += '<div class="match-row">';
+          leagueHtml += '<div class="match-teams">';
+          leagueHtml += '<div class="match-team"><div class="team-logo">' + getInitials(m.home_team) + '</div><div class="team-name">' + m.home_team + '</div></div>';
+          leagueHtml += '<div class="match-team"><div class="team-logo">' + getInitials(m.away_team) + '</div><div class="team-name">' + m.away_team + '</div></div>';
+          leagueHtml += '</div>';
+          leagueHtml += '<div class="match-info">';
+          leagueHtml += '<span class="status-badge ' + st.cls + '">' + st.label + '</span>';
+          if (m.score) {
+            leagueHtml += '<div class="match-score">' + m.score + '</div>';
+          } else {
+            leagueHtml += '<div class="match-time">' + m.kickoff + '</div>';
+          }
+          leagueHtml += '</div>';
+          leagueHtml += '</div>';
+        });
+        leagueHtml += '</div>';
+      });
+
+      content.innerHTML = hotHtml + leagueHtml;
+
+    } catch (error) {
+      content.innerHTML = '<div class="error">⚠️ Gagal memuat: ' + error.message + '</div>';
+    }
+  }
+
+  loadMatches();
+</script>
+</body>
+</html>
