@@ -3,113 +3,343 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JadwalBolaPrediksi - Live Score & Prediksi Bola</title>
+<title>JadwalBolaPrediksi - Jadwal & Prediksi Bola Akurat</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
-    --bg: #0a0606; --bg-card: #141010; --bg-card-hover: #1e1616;
-    --red: #ff3b30; --orange: #ff9500; --green: #22c55e;
-    --text: #f5f0eb; --text-dim: #8a7f7a; --border: #2a1f1f;
+    --bg: #0a0606;
+    --bg-card: #141010;
+    --bg-card-hover: #1e1616;
+    --red: #ff3b30;
+    --orange: #ff9500;
+    --green: #22c55e;
+    --text: #f5f0eb;
+    --text-dim: #8a7f7a;
+    --border: #2a1f1f;
   }
   body.light {
-    --bg: #f5f5f7; --bg-card: #ffffff; --bg-card-hover: #f0f0f2;
-    --text: #1a1a1a; --text-dim: #6b6b6b; --border: #e0e0e0;
+    --bg: #f5f5f7;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f0f0f2;
+    --text: #1a1a1a;
+    --text-dim: #6b6b6b;
+    --border: #e0e0e0;
   }
-  html { scroll-behavior: smooth; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: var(--bg); color: var(--text);
-    min-height: 100vh; line-height: 1.5;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.5;
     transition: background 0.3s, color 0.3s;
   }
-  .header {
-    background: linear-gradient(180deg, #1a0f0f 0%, var(--bg) 100%);
-    border-bottom: 1px solid var(--border);
-    padding: 12px 20px; position: sticky; top: 0; z-index: 100;
-    backdrop-filter: blur(10px);
+  .topbar {
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
   }
-  body.light .header { background: linear-gradient(180deg, #fff 0%, var(--bg) 100%); }
-  .header-inner {
-    max-width: 1400px; margin: 0 auto;
-    display: flex; justify-content: space-between; align-items: center;
-    gap: 12px; flex-wrap: wrap;
+  .brand-mini {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 800;
   }
-  .brand { display: flex; align-items: center; gap: 10px; }
-  .brand-logo { width: 36px; height: 36px; }
-  .brand-text h1 { font-size: 16px; font-weight: 800; line-height: 1.1; }
-  .brand-text p { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
-  .header-actions { display: flex; gap: 8px; align-items: center; }
+  .brand-mini svg { width: 28px; height: 28px; }
+  .top-actions { display: flex; gap: 8px; }
   .btn-icon {
     background: var(--bg-card); border: 1px solid var(--border);
-    color: var(--text); width: 36px; height: 36px;
+    color: var(--text); width: 34px; height: 34px;
     border-radius: 10px; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    font-size: 16px; transition: all 0.2s;
+    font-size: 15px; transition: all 0.2s;
   }
-  .btn-icon:hover { background: var(--bg-card-hover); border-color: var(--red); }
-  .btn-icon.spinning { animation: spin 1s linear infinite; }
-  .live-indicator {
-    display: flex; align-items: center; gap: 6px;
-    background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3);
-    padding: 5px 12px; border-radius: 20px;
-    font-size: 11px; font-weight: 700; color: var(--green);
+  .btn-icon:hover { border-color: var(--red); }
+
+  /* HERO */
+  .hero-big {
+    text-align: center;
+    padding: 50px 20px 40px;
+    position: relative;
+    overflow: hidden;
   }
-  .live-dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--green); animation: pulse-live 1.5s infinite;
+  .hero-big::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(circle, rgba(255,59,48,0.12) 0%, transparent 70%);
+    pointer-events: none;
   }
-  @keyframes pulse-live {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(1.2); }
+  .hero-big h1 {
+    font-size: clamp(32px, 6vw, 56px);
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    line-height: 1;
+    margin-bottom: 18px;
+    position: relative;
   }
-  .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
-  .hero {
-    background: linear-gradient(135deg, #2a0f0f 0%, #1a0a0a 100%);
-    border: 1px solid #3a1f1f; border-radius: 18px;
-    padding: 22px 24px; margin-bottom: 18px;
-    position: relative; overflow: hidden;
-  }
-  body.light .hero { background: linear-gradient(135deg, #fff5f5 0%, #fff 100%); border-color: #ffe0e0; }
-  .hero::before {
-    content: ''; position: absolute; top: -50%; right: -10%;
-    width: 280px; height: 280px;
-    background: radial-gradient(circle, rgba(255,59,48,0.18) 0%, transparent 70%);
-    border-radius: 50%;
-  }
-  .hero-label {
-    display: inline-block; background: rgba(255,149,0,0.15);
-    color: var(--orange); font-size: 10px; font-weight: 700;
-    padding: 4px 10px; border-radius: 20px;
-    letter-spacing: 0.5px; margin-bottom: 10px;
-  }
-  .hero h2 { font-size: 24px; font-weight: 800; margin-bottom: 6px; position: relative; }
-  .hero h2 span {
+  .hero-big h1 .accent {
     background: linear-gradient(135deg, var(--red), var(--orange));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     background-clip: text;
+    display: inline-block;
   }
-  .hero p { color: var(--text-dim); font-size: 13px; max-width: 550px; position: relative; }
-  .hero-stats { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; position: relative; }
-  .stat {
-    background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-    border-radius: 10px; padding: 8px 14px;
-    display: flex; align-items: center; gap: 8px;
+  .hero-big .cursor {
+    display: inline-block;
+    width: 4px;
+    height: 40px;
+    background: var(--red);
+    margin-left: 4px;
+    vertical-align: middle;
+    animation: blink 1s infinite;
   }
-  body.light .stat { background: rgba(0,0,0,0.03); }
-  .stat-icon { font-size: 14px; }
-  .stat-num { font-size: 15px; font-weight: 800; color: var(--red); }
-  .stat-label { font-size: 11px; color: var(--text-dim); }
-  .toolbar {
-    display: flex; gap: 8px; margin-bottom: 16px;
-    flex-wrap: wrap; align-items: center;
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+  .hero-big p {
+    color: var(--text-dim);
+    font-size: 14px;
+    max-width: 600px;
+    margin: 0 auto 28px;
+    position: relative;
+  }
+  .hero-big p strong {
+    color: var(--red);
+    font-weight: 800;
+  }
+  .hero-stats-big {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .stat-big {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 32px;
+    min-width: 110px;
+  }
+  .stat-big .num {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+  .stat-big .label {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 2px;
+    font-weight: 600;
+  }
+  .hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+  .hero-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 16px;
+    border-radius: 22px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .hero-pill:hover {
+    border-color: var(--red);
+    background: var(--bg-card-hover);
+  }
+  .hero-pill.live {
+    color: var(--red);
+    border-color: rgba(255,59,48,0.4);
+    background: rgba(255,59,48,0.08);
+  }
+  .hero-pill .dot-live {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--red);
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  .hero-pill.hot {
+    color: var(--orange);
+    border-color: rgba(255,149,0,0.4);
+    background: rgba(255,149,0,0.08);
+  }
+
+  .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+
+  /* SECTION */
+  .section-title {
+    font-size: 18px;
+    font-weight: 800;
+    margin: 24px 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::before {
+    content: '';
+    width: 4px; height: 20px;
+    background: linear-gradient(180deg, var(--red), var(--orange));
+    border-radius: 2px;
+  }
+
+  /* HOT SCROLL */
+  .hot-scroll {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+    margin-bottom: 24px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--red) transparent;
+  }
+  .hot-scroll::-webkit-scrollbar { height: 6px; }
+  .hot-scroll::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
+
+  /* MATCH CARD */
+  .match-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    min-width: 240px;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .match-card:hover {
+    border-color: var(--red);
+    transform: translateY(-2px);
+    background: var(--bg-card-hover);
+  }
+  .mc-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 10px;
+    color: var(--text-dim);
+    font-weight: 600;
+  }
+  .hdp-badge {
+    background: rgba(255,59,48,0.15);
+    color: var(--red);
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: 800;
+    font-size: 10px;
+    letter-spacing: 0.3px;
+  }
+  .mc-league {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  .mc-teams {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .mc-team {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    text-align: center;
+  }
+  .mc-team .logo {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: #fff;
+    object-fit: contain;
+    padding: 2px;
+  }
+  .mc-team .logo-fallback {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--red), var(--orange));
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 11px; font-weight: 800;
+  }
+  .mc-team .name {
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90px;
+  }
+  .mc-vs {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--text-dim);
+    flex-shrink: 0;
+  }
+  .mc-pred {
+    background: rgba(255,59,48,0.06);
+    border: 1px solid rgba(255,59,48,0.15);
+    border-radius: 8px;
+    padding: 7px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .mc-pred-label {
+    font-size: 9px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    font-weight: 700;
+  }
+  .mc-pred-score {
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--red);
+  }
+  .mc-pred-score.live {
+    color: var(--green);
+  }
+
+  /* LIST */
+  .list-controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
   }
   .search-wrap {
-    background: var(--bg-card); border: 1px solid var(--border);
-    border-radius: 12px; padding: 9px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 9px 14px;
     display: flex; align-items: center; gap: 10px;
-    flex: 1; min-width: 200px;
+    flex: 1;
+    min-width: 200px;
   }
-  .search-wrap svg { width: 16px; height: 16px; fill: var(--text-dim); flex-shrink: 0; }
+  .search-wrap svg { width: 16px; height: 16px; fill: var(--text-dim); }
   .search-wrap input {
     background: none; border: none; outline: none;
     color: var(--text); font-size: 13px; width: 100%;
@@ -122,117 +352,89 @@
     padding: 8px 14px; border-radius: 10px; cursor: pointer;
     transition: all 0.2s;
   }
-  .filter-btn:hover { border-color: var(--red); color: var(--text); }
   .filter-btn.active {
     background: linear-gradient(135deg, var(--red), var(--orange));
     color: white; border-color: transparent;
   }
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
-  .col {
-    background: var(--bg-card); border: 1px solid var(--border);
-    border-radius: 16px; overflow: hidden;
+
+  .list-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 20px;
   }
-  .col-header {
-    padding: 13px 18px; border-bottom: 1px solid var(--border);
-    display: flex; justify-content: space-between; align-items: center;
-    background: rgba(255,59,48,0.04);
-  }
-  .col-header h3 { font-size: 13px; font-weight: 800; color: var(--orange); }
-  .col-header .count {
-    background: rgba(255,59,48,0.15); color: var(--red);
-    padding: 3px 10px; border-radius: 20px;
-    font-size: 11px; font-weight: 700;
-  }
-  .col-body { max-height: 720px; overflow-y: auto; }
-  .col-body::-webkit-scrollbar { width: 6px; }
-  .col-body::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
   .league-group { border-bottom: 1px solid var(--border); }
   .league-group:last-child { border-bottom: none; }
   .league-title {
-    padding: 9px 18px; background: rgba(255,255,255,0.02);
-    font-size: 11px; font-weight: 800; color: var(--text-dim);
-    text-transform: uppercase; letter-spacing: 0.5px;
-    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 18px;
+    background: rgba(255,59,48,0.05);
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    justify-content: space-between;
   }
-  body.light .league-title { background: rgba(0,0,0,0.02); }
   .match-row {
-    padding: 11px 18px;
+    padding: 12px 18px;
     border-bottom: 1px solid rgba(255,255,255,0.03);
-    display: flex; align-items: center; gap: 12px;
-    transition: background 0.2s; cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: background 0.2s;
+    cursor: pointer;
   }
   body.light .match-row { border-bottom-color: rgba(0,0,0,0.05); }
   .match-row:hover { background: var(--bg-card-hover); }
   .match-row:last-child { border-bottom: none; }
-  .match-time-box { min-width: 48px; text-align: center; flex-shrink: 0; }
-  .match-time-box .time { font-size: 12px; font-weight: 700; color: var(--text); }
-  .match-time-box .date { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
-  .match-time-box.live .time { color: var(--red); }
-  .match-time-box.live .date { color: var(--red); font-weight: 700; }
-  .match-teams-col { flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-  .match-team-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
-  .match-team-row .logo {
-    width: 20px; height: 20px; border-radius: 50%;
-    background: #fff; object-fit: contain; flex-shrink: 0; padding: 1px;
+  .mr-time {
+    min-width: 50px;
+    text-align: center;
+    flex-shrink: 0;
   }
-  .match-team-row .logo-fallback {
+  .mr-time .time { font-size: 12px; font-weight: 700; }
+  .mr-time .date { font-size: 10px; color: var(--text-dim); }
+  .mr-time.live .time { color: var(--red); }
+  .mr-time.live .date { color: var(--red); }
+  .mr-teams { flex: 1; min-width: 0; }
+  .mr-team {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .mr-team:last-child { margin-bottom: 0; }
+  .mr-team .logo {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: #fff; object-fit: contain; padding: 1px;
+    flex-shrink: 0;
+  }
+  .mr-team .logo-fallback {
     width: 20px; height: 20px; border-radius: 50%;
     background: linear-gradient(135deg, var(--red), var(--orange));
     display: flex; align-items: center; justify-content: center;
-    font-size: 8px; font-weight: 800; color: white; flex-shrink: 0;
+    font-size: 8px; font-weight: 800; color: white;
+    flex-shrink: 0;
   }
-  .match-team-row .name {
+  .mr-team .name {
     font-size: 13px; font-weight: 600;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .match-score-box {
-    min-width: 40px; text-align: right; flex-shrink: 0;
+  .mr-score {
+    min-width: 40px; text-align: right;
     display: flex; flex-direction: column; gap: 6px;
+    flex-shrink: 0;
   }
-  .score-line { font-size: 14px; font-weight: 800; color: var(--text); }
-  .score-line.live { color: var(--red); }
-  .score-line.empty { color: var(--text-dim); font-size: 12px; }
-  .pred-row {
-    padding: 11px 18px;
-    border-bottom: 1px solid rgba(255,255,255,0.03);
-    display: flex; align-items: center; gap: 12px;
-    cursor: pointer; transition: background 0.2s;
+  .mr-score .line {
+    font-size: 14px; font-weight: 800;
   }
-  body.light .pred-row { border-bottom-color: rgba(0,0,0,0.05); }
-  .pred-row:hover { background: var(--bg-card-hover); }
-  .pred-row:last-child { border-bottom: none; }
-  .pred-teams { flex: 1; min-width: 0; }
-  .pred-team {
-    font-size: 12px; font-weight: 600;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    margin-bottom: 3px;
-  }
-  .pred-team:last-child { margin-bottom: 0; }
-  .pred-box-col {
-    display: flex; flex-direction: column; gap: 5px;
-    align-items: flex-end; flex-shrink: 0;
-  }
-  .pred-line { display: flex; align-items: center; gap: 6px; }
-  .pred-label {
-    font-size: 9px; color: var(--text-dim);
-    text-transform: uppercase; letter-spacing: 0.3px;
-  }
-  .pred-score {
-    background: linear-gradient(135deg, var(--red), var(--orange));
-    color: white; padding: 4px 9px; border-radius: 6px;
-    font-size: 12px; font-weight: 800; letter-spacing: 0.5px;
-  }
-  .pred-voor {
-    background: rgba(255,149,0,0.15);
-    color: var(--orange); padding: 4px 9px; border-radius: 6px;
-    font-size: 11px; font-weight: 800; letter-spacing: 0.3px;
-    border: 1px solid rgba(255,149,0,0.3);
-  }
-  .loading {
-    text-align: center; padding: 50px 20px;
-    color: var(--text-dim); font-size: 13px;
-  }
+  .mr-score .line.live { color: var(--red); }
+  .mr-score .line.empty { color: var(--text-dim); font-size: 12px; }
+
+  /* Loading & states */
+  .loading { text-align: center; padding: 50px 20px; color: var(--text-dim); font-size: 13px; }
   .spinner {
     width: 32px; height: 32px;
     border: 3px solid var(--border); border-top-color: var(--red);
@@ -245,108 +447,123 @@
     color: var(--red); padding: 14px; border-radius: 10px;
     text-align: center; font-size: 13px; margin: 20px;
   }
-  .empty {
-    text-align: center; padding: 40px 20px;
-    color: var(--text-dim); font-size: 13px;
-  }
-  .last-update {
-    text-align: center; color: var(--text-dim);
-    font-size: 11px; padding: 16px 0 8px;
-  }
+  .empty { text-align: center; padding: 40px 20px; color: var(--text-dim); font-size: 13px; }
+  .last-update { text-align: center; color: var(--text-dim); font-size: 11px; padding: 16px 0; }
+
+  /* Modal */
   .modal-bg {
     display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.8); z-index: 999;
+    background: rgba(0,0,0,0.85); z-index: 999;
     align-items: center; justify-content: center;
     padding: 20px; backdrop-filter: blur(4px);
   }
   .modal-bg.show { display: flex; }
   .modal {
-    background: var(--bg-card); border: 1px solid var(--border);
-    border-radius: 16px; max-width: 480px; width: 100%;
-    max-height: 90vh; overflow-y: auto;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    max-width: 440px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
   }
   .modal-head {
-    padding: 16px 20px; border-bottom: 1px solid var(--border);
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
     display: flex; justify-content: space-between; align-items: center;
   }
-  .modal-head h3 { font-size: 15px; font-weight: 800; }
+  .modal-head h3 { font-size: 14px; font-weight: 800; }
   .modal-close {
     background: none; border: none; color: var(--text-dim);
-    font-size: 22px; cursor: pointer; line-height: 1;
+    font-size: 24px; cursor: pointer; line-height: 1;
   }
-  .modal-body { padding: 20px; }
+  .modal-body { padding: 18px; }
   .modal-league {
     font-size: 11px; color: var(--text-dim);
     text-transform: uppercase; letter-spacing: 0.5px;
-    margin-bottom: 16px; text-align: center;
+    margin-bottom: 14px; text-align: center; font-weight: 700;
   }
   .modal-teams {
     display: flex; justify-content: space-between; align-items: center;
-    gap: 16px; margin-bottom: 20px;
+    gap: 14px; margin-bottom: 18px;
   }
   .modal-team { flex: 1; text-align: center; }
-  .modal-team .logo { width: 48px; height: 48px; margin: 0 auto 8px; display: block; object-fit: contain; }
-  .modal-team .logo-fallback { width: 48px; height: 48px; margin: 0 auto 8px; font-size: 16px; }
-  .modal-team .name { font-size: 13px; font-weight: 700; }
-  .modal-vs { font-size: 20px; font-weight: 800; color: var(--red); }
+  .modal-team .logo { width: 46px; height: 46px; margin: 0 auto 8px; display: block; object-fit: contain; }
+  .modal-team .logo-fallback { width: 46px; height: 46px; margin: 0 auto 8px; font-size: 15px; }
+  .modal-team .name { font-size: 12px; font-weight: 700; }
+  .modal-vs { font-size: 18px; font-weight: 900; color: var(--red); }
   .modal-info {
     background: rgba(255,255,255,0.03); border-radius: 10px;
-    padding: 14px; margin-bottom: 12px;
+    padding: 12px; margin-bottom: 10px;
   }
   body.light .modal-info { background: rgba(0,0,0,0.03); }
   .modal-info-row {
     display: flex; justify-content: space-between;
-    font-size: 12px; padding: 6px 0;
+    font-size: 12px; padding: 5px 0;
   }
   .modal-info-row .label { color: var(--text-dim); }
   .modal-info-row .value { font-weight: 700; }
+
+  @media (max-width: 600px) {
+    .hero-big { padding: 30px 16px 24px; }
+    .stat-big { padding: 14px 22px; min-width: 90px; }
+    .stat-big .num { font-size: 20px; }
+  }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-inner">
-    <div class="brand">
-      <svg class="brand-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#ff3b30"/>
-            <stop offset="100%" stop-color="#ff9500"/>
-          </linearGradient>
-        </defs>
-        <circle cx="50" cy="50" r="45" fill="url(#g1)"/>
-        <circle cx="50" cy="50" r="30" fill="none" stroke="white" stroke-width="3" opacity="0.3"/>
-        <path d="M50 20 L60 40 L80 40 L65 55 L70 75 L50 62 L30 75 L35 55 L20 40 L40 40 Z" fill="white"/>
-      </svg>
-      <div class="brand-text">
-        <h1>JadwalBolaPrediksi</h1>
-        <p>Live Score & Prediksi Bola</p>
-      </div>
+<div class="topbar">
+  <div class="brand-mini">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ff3b30"/>
+          <stop offset="100%" stop-color="#ff9500"/>
+        </linearGradient>
+      </defs>
+      <circle cx="50" cy="50" r="45" fill="url(#g1)"/>
+      <path d="M50 20 L60 40 L80 40 L65 55 L70 75 L50 62 L30 75 L35 55 L20 40 L40 40 Z" fill="white"/>
+    </svg>
+    <span>JadwalBolaPrediksi</span>
+  </div>
+  <div class="top-actions">
+    <button class="btn-icon" id="btnRefresh" title="Refresh">🔄</button>
+    <button class="btn-icon" id="btnTheme" title="Tema">🌙</button>
+  </div>
+</div>
+
+<div class="hero-big">
+  <h1>JADWAL & PREDIKSI<br><span class="accent">BOLA AKURAT</span><span class="cursor"></span></h1>
+  <p>Temukan jadwal, pasaran <strong>HDP</strong>, dan prediksi skor terbaru hanya di <strong>JadwalBolaPrediksi</strong>.</p>
+  <div class="hero-stats-big">
+    <div class="stat-big">
+      <div class="num" id="statMatches">-</div>
+      <div class="label">Jadwal</div>
     </div>
-    <div class="header-actions">
-      <div class="live-indicator">
-        <span class="live-dot"></span>
-        <span>LIVE</span>
-      </div>
-      <button class="btn-icon" id="btnRefresh" title="Refresh">🔄</button>
-      <button class="btn-icon" id="btnTheme" title="Ganti tema">🌙</button>
+    <div class="stat-big">
+      <div class="num" id="statPrediksi">-</div>
+      <div class="label">Prediksi</div>
     </div>
+    <div class="stat-big">
+      <div class="num" id="statLeagues">-</div>
+      <div class="label">Liga</div>
+    </div>
+  </div>
+  <div class="hero-actions">
+    <div class="hero-pill live"><span class="dot-live"></span> Live Update</div>
+    <div class="hero-pill hot">🔥 Hot Big Match</div>
   </div>
 </div>
 
 <div class="container">
-  <div class="hero">
-    <div class="hero-label">⚡ UPDATE HARI INI</div>
-    <h2>Jadwal & Prediksi <span>Bola Terbaru</span></h2>
-    <p>Live score, jadwal pertandingan, dan prediksi skor dari berbagai liga dunia.</p>
-    <div class="hero-stats">
-      <div class="stat"><span class="stat-icon">📅</span><span class="stat-num" id="statMatches">-</span><span class="stat-label">Jadwal</span></div>
-      <div class="stat"><span class="stat-icon">🏆</span><span class="stat-num" id="statLeagues">-</span><span class="stat-label">Liga</span></div>
-      <div class="stat"><span class="stat-icon">🔴</span><span class="stat-num" id="statLive">-</span><span class="stat-label">Live</span></div>
-    </div>
+  <div class="section-title">🔥 Pertandingan Spesial</div>
+  <div class="hot-scroll" id="hotScroll">
+    <div class="loading"><div class="spinner"></div>Memuat...</div>
   </div>
 
-  <div class="toolbar">
+  <div class="section-title">📅 Jadwal Bola Terbaru</div>
+  <div class="list-controls">
     <div class="search-wrap">
       <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
       <input type="text" id="searchInput" placeholder="Cari nama tim atau liga...">
@@ -359,26 +576,8 @@
     </div>
   </div>
 
-  <div class="grid">
-    <div class="col">
-      <div class="col-header">
-        <h3>📅 JADWAL BOLA</h3>
-        <span class="count" id="countJadwal">0 Match</span>
-      </div>
-      <div class="col-body" id="jadwalBody">
-        <div class="loading"><div class="spinner"></div>Memuat jadwal...</div>
-      </div>
-    </div>
-
-    <div class="col">
-      <div class="col-header">
-        <h3>🔮 PREDIKSI SKOR</h3>
-        <span class="count" id="countPrediksi">0 Match</span>
-      </div>
-      <div class="col-body" id="prediksiBody">
-        <div class="loading"><div class="spinner"></div>Memuat prediksi...</div>
-      </div>
-    </div>
+  <div class="list-wrap" id="listWrap">
+    <div class="loading"><div class="spinner"></div>Memuat jadwal...</div>
   </div>
 
   <div class="last-update" id="lastUpdate"></div>
@@ -409,11 +608,11 @@
   }
 
   function teamLogoHtml(name, logoUrl, size) {
-    const cls = size === "big" ? "logo" : "logo";
+    const sizeStyle = size === "big" ? 'style="width:46px;height:46px;font-size:15px;"' : '';
     if (logoUrl) {
-      return '<img class="' + cls + '" src="' + logoUrl + '" alt="" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';"><div class="logo-fallback" style="display:none;' + (size === "big" ? "font-size:16px;" : "") + '">' + getInitials(name) + '</div>';
+      return '<img class="' + (size === "big" ? "logo" : "logo") + '" src="' + logoUrl + '" alt="" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';"><div class="logo-fallback" style="display:none;' + (size === "big" ? 'width:46px;height:46px;font-size:15px;' : '') + '">' + getInitials(name) + '</div>';
     }
-    return '<div class="logo-fallback"' + (size === "big" ? ' style="font-size:16px;"' : '') + '>' + getInitials(name) + '</div>';
+    return '<div class="logo-fallback" ' + sizeStyle + '>' + getInitials(name) + '</div>';
   }
 
   function formatTime(kickoff) {
@@ -423,24 +622,22 @@
     return { time: parts[1].trim(), date: parts[0].trim() };
   }
 
-  // Prediksi skor: integer 0-4
-  function generatePredictionScore(match) {
+  // Prediksi skor integer 0-4
+  function predScore(match) {
     const seed = (match.id || 0) % 1000;
-    const homeGoals = seed % 4;
-    const awayGoals = (seed * 7) % 4;
-    return homeGoals + " - " + awayGoals;
+    return (seed % 4) + " - " + ((seed * 7) % 4);
   }
 
-  // Voor / HDP format: "1 1/2 - 1" (Asian handicap)
-  function generateVoor(match) {
+  // HDP / Voor format Asia
+  function hdp(match) {
     const seed = (match.id || 0) % 100;
     const options = [
-      "0 - 1/2", "1/2 - 1", "0 - 3/4", "3/4 - 1",
-      "1 - 1 1/2", "1 1/2 - 1", "1 - 2", "2 - 2 1/2",
-      "0 - 1/4", "1/4 - 1/2", "1/2 - 3/4", "3/4 - 1 1/4",
-      "1 - 1 1/4", "1 1/4 - 1 1/2", "1 1/2 - 2", "2 - 2 1/4"
+      "0 : 1/2", "1/2 : 0", "0 : 3/4", "3/4 : 0",
+      "1/4 : 0", "0 : 1/4", "1/2 : 1", "1 : 1/2",
+      "0 : 1", "1 : 0", "3/4 : 1", "1 : 3/4",
+      "0 : 1 1/4", "1 1/4 : 0", "0 : 1 1/2", "1 1/2 : 0"
     ];
-    return options[seed % options.length];
+    return "HDP " + options[seed % options.length];
   }
 
   function filterMatches() {
@@ -459,26 +656,59 @@
     return result;
   }
 
-  function renderMatches() {
-    const matches = filterMatches();
-    const jadwalBody = document.getElementById("jadwalBody");
-    const prediksiBody = document.getElementById("prediksiBody");
+  function renderHot() {
+    const hotScroll = document.getElementById("hotScroll");
+    const hot = allMatches.slice(0, 8);
 
-    if (matches.length === 0) {
-      jadwalBody.innerHTML = '<div class="empty">Belum ada pertandingan.</div>';
-      prediksiBody.innerHTML = '<div class="empty">Belum ada prediksi.</div>';
-      document.getElementById("countJadwal").textContent = "0 Match";
-      document.getElementById("countPrediksi").textContent = "0 Match";
+    if (hot.length === 0) {
+      hotScroll.innerHTML = '<div class="empty">Belum ada pertandingan.</div>';
       return;
     }
 
-    const leagues = new Set(matches.map(function(m) { return m.league; }));
-    const liveCount = matches.filter(function(m) { return m.status === "LIVE"; }).length;
-    document.getElementById("statMatches").textContent = matches.length;
-    document.getElementById("statLeagues").textContent = leagues.size;
-    document.getElementById("statLive").textContent = liveCount;
-    document.getElementById("countJadwal").textContent = matches.length + " Match";
-    document.getElementById("countPrediksi").textContent = matches.length + " Match";
+    let html = "";
+    hot.forEach(function(m) {
+      const t = formatTime(m.kickoff);
+      const isLive = m.status === "LIVE";
+      html += '<div class="match-card" data-id="' + m.id + '">';
+      html += '<div class="mc-top">';
+      html += '<span>' + t.date + ' • ' + t.time + '</span>';
+      html += '<span class="hdp-badge">' + hdp(m) + '</span>';
+      html += '</div>';
+      html += '<div class="mc-league">' + m.league + '</div>';
+      html += '<div class="mc-teams">';
+      html += '<div class="mc-team">' + teamLogoHtml(m.home_team, m.home_logo) + '<div class="name">' + m.home_team + '</div></div>';
+      html += '<div class="mc-vs">VS</div>';
+      html += '<div class="mc-team">' + teamLogoHtml(m.away_team, m.away_logo) + '<div class="name">' + m.away_team + '</div></div>';
+      html += '</div>';
+      html += '<div class="mc-pred">';
+      html += '<span class="mc-pred-label">Prediksi Skor</span>';
+      if (m.score) {
+        html += '<span class="mc-pred-score live">' + m.score + '</span>';
+      } else {
+        html += '<span class="mc-pred-score">' + predScore(m) + '</span>';
+      }
+      html += '</div>';
+      html += '</div>';
+    });
+    hotScroll.innerHTML = html;
+
+    hotScroll.querySelectorAll(".match-card").forEach(function(card) {
+      card.addEventListener("click", function() {
+        const id = parseInt(card.getAttribute("data-id"));
+        const m = allMatches.find(function(x) { return x.id === id; });
+        if (m) openModal(m);
+      });
+    });
+  }
+
+  function renderList() {
+    const listWrap = document.getElementById("listWrap");
+    const matches = filterMatches();
+
+    if (matches.length === 0) {
+      listWrap.innerHTML = '<div class="empty">Belum ada pertandingan.</div>';
+      return;
+    }
 
     const groups = {};
     matches.forEach(function(m) {
@@ -486,89 +716,54 @@
       groups[m.league].push(m);
     });
 
-    let jadwalHtml = "";
+    let html = "";
     Object.keys(groups).sort().forEach(function(leagueName) {
-      jadwalHtml += '<div class="league-group">';
-      jadwalHtml += '<div class="league-title"><span>⚽ ' + leagueName + '</span><span>' + groups[leagueName].length + '</span></div>';
+      html += '<div class="league-group">';
+      html += '<div class="league-title"><span>⚽ ' + leagueName + '</span><span>' + groups[leagueName].length + ' Match</span></div>';
       groups[leagueName].forEach(function(m) {
         const t = formatTime(m.kickoff);
         const isLive = m.status === "LIVE";
         const isFT = m.status === "FT";
 
-        jadwalHtml += '<div class="match-row" data-id="' + m.id + '">';
-        jadwalHtml += '<div class="match-time-box ' + (isLive ? "live" : "") + '">';
+        html += '<div class="match-row" data-id="' + m.id + '">';
+        html += '<div class="mr-time ' + (isLive ? "live" : "") + '">';
         if (isLive) {
-          jadwalHtml += '<div class="time">LIVE</div>';
-          jadwalHtml += '<div class="date">' + t.date + '</div>';
+          html += '<div class="time">LIVE</div>';
         } else if (isFT) {
-          jadwalHtml += '<div class="time">FT</div>';
-          jadwalHtml += '<div class="date">' + t.date + '</div>';
+          html += '<div class="time">FT</div>';
         } else {
-          jadwalHtml += '<div class="time">' + t.time + '</div>';
-          jadwalHtml += '<div class="date">' + t.date + '</div>';
+          html += '<div class="time">' + t.time + '</div>';
         }
-        jadwalHtml += '</div>';
+        html += '<div class="date">' + t.date + '</div>';
+        html += '</div>';
 
-        jadwalHtml += '<div class="match-teams-col">';
-        jadwalHtml += '<div class="match-team-row">' + teamLogoHtml(m.home_team, m.home_logo) + '<span class="name">' + m.home_team + '</span></div>';
-        jadwalHtml += '<div class="match-team-row">' + teamLogoHtml(m.away_team, m.away_logo) + '<span class="name">' + m.away_team + '</span></div>';
-        jadwalHtml += '</div>';
+        html += '<div class="mr-teams">';
+        html += '<div class="mr-team">' + teamLogoHtml(m.home_team, m.home_logo) + '<span class="name">' + m.home_team + '</span></div>';
+        html += '<div class="mr-team">' + teamLogoHtml(m.away_team, m.away_logo) + '<span class="name">' + m.away_team + '</span></div>';
+        html += '</div>';
 
-        jadwalHtml += '<div class="match-score-box">';
+        html += '<div class="mr-score">';
         if (m.score) {
           const parts = m.score.split(" - ");
-          jadwalHtml += '<div class="score-line ' + (isLive ? "live" : "") + '">' + parts[0] + '</div>';
-          jadwalHtml += '<div class="score-line ' + (isLive ? "live" : "") + '">' + parts[1] + '</div>';
+          html += '<div class="line ' + (isLive ? "live" : "") + '">' + parts[0] + '</div>';
+          html += '<div class="line ' + (isLive ? "live" : "") + '">' + parts[1] + '</div>';
         } else {
-          jadwalHtml += '<div class="score-line empty">-</div>';
-          jadwalHtml += '<div class="score-line empty">-</div>';
+          html += '<div class="line empty">-</div>';
+          html += '<div class="line empty">-</div>';
         }
-        jadwalHtml += '</div>';
-        jadwalHtml += '</div>';
+        html += '</div>';
+        html += '</div>';
       });
-      jadwalHtml += '</div>';
+      html += '</div>';
     });
 
-    jadwalBody.innerHTML = jadwalHtml;
+    listWrap.innerHTML = html;
 
-    let predHtml = "";
-    Object.keys(groups).sort().forEach(function(leagueName) {
-      predHtml += '<div class="league-group">';
-      predHtml += '<div class="league-title"><span>⚽ ' + leagueName + '</span><span>' + groups[leagueName].length + '</span></div>';
-      groups[leagueName].forEach(function(m) {
-        const t = formatTime(m.kickoff);
-        const predScore = generatePredictionScore(m);
-        const voor = generateVoor(m);
-
-        predHtml += '<div class="pred-row" data-id="' + m.id + '">';
-        predHtml += '<div class="match-time-box">';
-        predHtml += '<div class="time">' + t.time + '</div>';
-        predHtml += '<div class="date">' + t.date + '</div>';
-        predHtml += '</div>';
-        predHtml += '<div class="pred-teams">';
-        predHtml += '<div class="pred-team">' + m.home_team + '</div>';
-        predHtml += '<div class="pred-team">' + m.away_team + '</div>';
-        predHtml += '</div>';
-        predHtml += '<div class="pred-box-col">';
-        predHtml += '<div class="pred-line"><span class="pred-label">Skor</span><span class="pred-score">' + predScore + '</span></div>';
-        predHtml += '<div class="pred-line"><span class="pred-label">Voor</span><span class="pred-voor">' + voor + '</span></div>';
-        predHtml += '</div>';
-        predHtml += '</div>';
-      });
-      predHtml += '</div>';
-    });
-
-    prediksiBody.innerHTML = predHtml;
-
-    const now = new Date();
-    document.getElementById("lastUpdate").textContent = "Update terakhir: " + now.toLocaleTimeString('id-ID');
-
-    // Attach click handlers
-    document.querySelectorAll(".match-row, .pred-row").forEach(function(row) {
+    listWrap.querySelectorAll(".match-row").forEach(function(row) {
       row.addEventListener("click", function() {
         const id = parseInt(row.getAttribute("data-id"));
-        const match = allMatches.find(function(m) { return m.id === id; });
-        if (match) openModal(match);
+        const m = allMatches.find(function(x) { return x.id === id; });
+        if (m) openModal(m);
       });
     });
   }
@@ -576,9 +771,6 @@
   function openModal(m) {
     const body = document.getElementById("modalBody");
     const t = formatTime(m.kickoff);
-    const predScore = generatePredictionScore(m);
-    const voor = generateVoor(m);
-
     let html = '';
     html += '<div class="modal-league">' + m.league + '</div>';
     html += '<div class="modal-teams">';
@@ -586,7 +778,6 @@
     html += '<div class="modal-vs">VS</div>';
     html += '<div class="modal-team">' + teamLogoHtml(m.away_team, m.away_logo, "big") + '<div class="name">' + m.away_team + '</div></div>';
     html += '</div>';
-
     html += '<div class="modal-info">';
     html += '<div class="modal-info-row"><span class="label">Tanggal</span><span class="value">' + t.date + '</span></div>';
     html += '<div class="modal-info-row"><span class="label">Jam</span><span class="value">' + t.time + ' WIB</span></div>';
@@ -595,12 +786,10 @@
       html += '<div class="modal-info-row"><span class="label">Skor</span><span class="value">' + m.score + '</span></div>';
     }
     html += '</div>';
-
     html += '<div class="modal-info">';
-    html += '<div class="modal-info-row"><span class="label">🔮 Prediksi Skor</span><span class="value">' + predScore + '</span></div>';
-    html += '<div class="modal-info-row"><span class="label">📊 Voor / HDP</span><span class="value">' + voor + '</span></div>';
+    html += '<div class="modal-info-row"><span class="label">🔮 Prediksi Skor</span><span class="value">' + predScore(m) + '</span></div>';
+    html += '<div class="modal-info-row"><span class="label">📊 Pasaran</span><span class="value">' + hdp(m) + '</span></div>';
     html += '</div>';
-
     body.innerHTML = html;
     document.getElementById("modalBg").classList.add("show");
   }
@@ -611,45 +800,50 @@
       const data = await res.json();
 
       if (data.error) {
-        document.getElementById("jadwalBody").innerHTML = '<div class="error">⚠️ ' + data.error + '</div>';
-        document.getElementById("prediksiBody").innerHTML = '<div class="error">⚠️ ' + data.error + '</div>';
+        document.getElementById("listWrap").innerHTML = '<div class="error">⚠️ ' + data.error + '</div>';
         return;
       }
 
       allMatches = data.matches || [];
-      renderMatches();
+
+      const leagues = new Set(allMatches.map(function(m) { return m.league; }));
+      document.getElementById("statMatches").textContent = allMatches.length;
+      document.getElementById("statPrediksi").textContent = allMatches.length;
+      document.getElementById("statLeagues").textContent = leagues.size;
+
+      renderHot();
+      renderList();
+
+      const now = new Date();
+      document.getElementById("lastUpdate").textContent = "Update terakhir: " + now.toLocaleTimeString('id-ID');
     } catch (error) {
-      document.getElementById("jadwalBody").innerHTML = '<div class="error">⚠️ Gagal memuat: ' + error.message + '</div>';
-      document.getElementById("prediksiBody").innerHTML = '<div class="error">⚠️ Gagal memuat.</div>';
+      document.getElementById("listWrap").innerHTML = '<div class="error">⚠️ Gagal memuat: ' + error.message + '</div>';
     }
   }
 
-  // Search
   document.getElementById("searchInput").addEventListener("input", function(e) {
     currentSearch = e.target.value;
-    renderMatches();
+    renderList();
   });
 
-  // Filter buttons
   document.querySelectorAll(".filter-btn").forEach(function(btn) {
     btn.addEventListener("click", function() {
       document.querySelectorAll(".filter-btn").forEach(function(b) { b.classList.remove("active"); });
       btn.classList.add("active");
       currentFilter = btn.getAttribute("data-filter");
-      renderMatches();
+      renderList();
     });
   });
 
-  // Refresh button
   document.getElementById("btnRefresh").addEventListener("click", function() {
     const btn = document.getElementById("btnRefresh");
-    btn.classList.add("spinning");
+    btn.style.transform = "rotate(360deg)";
+    btn.style.transition = "transform 0.5s";
     loadMatches().then(function() {
-      setTimeout(function() { btn.classList.remove("spinning"); }, 500);
+      setTimeout(function() { btn.style.transform = ""; }, 500);
     });
   });
 
-  // Theme toggle
   document.getElementById("btnTheme").addEventListener("click", function() {
     document.body.classList.toggle("light");
     const isLight = document.body.classList.contains("light");
@@ -657,13 +851,11 @@
     localStorage.setItem("theme", isLight ? "light" : "dark");
   });
 
-  // Load saved theme
   if (localStorage.getItem("theme") === "light") {
     document.body.classList.add("light");
     document.getElementById("btnTheme").textContent = "☀️";
   }
 
-  // Modal close
   document.getElementById("modalClose").addEventListener("click", function() {
     document.getElementById("modalBg").classList.remove("show");
   });
@@ -673,7 +865,6 @@
     }
   });
 
-  // Init
   loadMatches();
   setInterval(loadMatches, REFRESH_INTERVAL);
 </script>
