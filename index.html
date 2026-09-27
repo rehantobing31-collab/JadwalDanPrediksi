@@ -3,15 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JadwalBolaPrediksi - Jadwal & Prediksi Bola Terbaru</title>
+<title>JadwalBolaPrediksi - Live Score & Prediksi Bola</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
-    --bg: #0f0a0a;
-    --bg-card: #1a1212;
-    --bg-card-hover: #241818;
+    --bg: #0a0606;
+    --bg-card: #141010;
+    --bg-card-hover: #1e1616;
     --red: #ff3b30;
     --orange: #ff9500;
+    --green: #22c55e;
     --text: #f5f0eb;
     --text-dim: #8a7f7a;
     --border: #2a1f1f;
@@ -27,174 +28,273 @@
   .header {
     background: linear-gradient(180deg, #1a0f0f 0%, var(--bg) 100%);
     border-bottom: 1px solid var(--border);
-    padding: 16px 20px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    padding: 14px 20px;
+    position: sticky; top: 0; z-index: 100;
     backdrop-filter: blur(10px);
   }
   .header-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
+    max-width: 1400px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 16px; flex-wrap: wrap;
   }
-  .brand { display: flex; align-items: center; gap: 12px; }
-  .brand-logo { width: 42px; height: 42px; flex-shrink: 0; }
-  .brand-text h1 { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; color: var(--text); line-height: 1.1; }
-  .brand-text p { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
-  .nav { display: flex; gap: 8px; }
-  .nav a { color: var(--text-dim); text-decoration: none; font-size: 14px; font-weight: 600; padding: 8px 16px; border-radius: 8px; transition: all 0.2s; }
-  .nav a:hover, .nav a.active { background: var(--red); color: white; }
-  .container { max-width: 1200px; margin: 0 auto; padding: 24px 20px 60px; }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand-logo { width: 38px; height: 38px; }
+  .brand-text h1 { font-size: 17px; font-weight: 800; line-height: 1.1; }
+  .brand-text p { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+  .live-indicator {
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(34,197,94,0.1);
+    border: 1px solid rgba(34,197,94,0.3);
+    padding: 5px 12px; border-radius: 20px;
+    font-size: 11px; font-weight: 700; color: var(--green);
+  }
+  .live-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--green);
+    animation: pulse-live 1.5s infinite;
+  }
+  @keyframes pulse-live {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
+  }
+  .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+
+  /* HERO */
   .hero {
     background: linear-gradient(135deg, #2a0f0f 0%, #1a0a0a 100%);
     border: 1px solid #3a1f1f;
-    border-radius: 20px;
-    padding: 32px 28px;
-    margin-bottom: 28px;
-    position: relative;
-    overflow: hidden;
+    border-radius: 18px;
+    padding: 24px 26px;
+    margin-bottom: 20px;
+    position: relative; overflow: hidden;
   }
   .hero::before {
     content: '';
-    position: absolute;
-    top: -50%; right: -10%;
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(255,59,48,0.15) 0%, transparent 70%);
+    position: absolute; top: -50%; right: -10%;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(255,59,48,0.18) 0%, transparent 70%);
     border-radius: 50%;
   }
   .hero-label {
     display: inline-block;
     background: rgba(255,149,0,0.15);
     color: var(--orange);
-    font-size: 11px; font-weight: 700;
-    padding: 4px 12px; border-radius: 20px;
-    letter-spacing: 0.5px; margin-bottom: 12px;
+    font-size: 10px; font-weight: 700;
+    padding: 4px 10px; border-radius: 20px;
+    letter-spacing: 0.5px; margin-bottom: 10px;
   }
-  .hero h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; position: relative; }
+  .hero h2 { font-size: 26px; font-weight: 800; margin-bottom: 6px; position: relative; }
   .hero h2 span {
     background: linear-gradient(135deg, var(--red), var(--orange));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  .hero p { color: var(--text-dim); font-size: 14px; max-width: 500px; position: relative; }
-  .hero-stats { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; position: relative; }
+  .hero p { color: var(--text-dim); font-size: 13px; max-width: 550px; position: relative; }
+  .hero-stats { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; position: relative; }
   .stat {
     background: rgba(255,255,255,0.05);
     border: 1px solid var(--border);
-    border-radius: 12px; padding: 10px 16px;
+    border-radius: 10px; padding: 8px 14px;
     display: flex; align-items: center; gap: 8px;
   }
-  .stat-icon { font-size: 16px; }
-  .stat-num { font-size: 16px; font-weight: 800; color: var(--red); }
-  .stat-label { font-size: 12px; color: var(--text-dim); }
-  .section-title { font-size: 18px; font-weight: 800; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; scroll-margin-top: 100px; }
-  .section-title::before {
-    content: '';
-    width: 4px; height: 20px;
-    background: linear-gradient(180deg, var(--red), var(--orange));
-    border-radius: 2px;
-  }
-  .hot-scroll {
-    display: flex; gap: 14px;
-    overflow-x: auto; padding-bottom: 12px; margin-bottom: 28px;
-    scrollbar-width: thin; scrollbar-color: var(--red) transparent;
-  }
-  .hot-scroll::-webkit-scrollbar { height: 6px; }
-  .hot-scroll::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
-  .hot-card {
+  .stat-icon { font-size: 14px; }
+  .stat-num { font-size: 15px; font-weight: 800; color: var(--red); }
+  .stat-label { font-size: 11px; color: var(--text-dim); }
+
+  /* SEARCH */
+  .search-wrap {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 14px; padding: 16px;
-    min-width: 260px; flex-shrink: 0;
-    transition: all 0.2s;
+    border-radius: 12px;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
   }
-  .hot-card:hover { background: var(--bg-card-hover); border-color: var(--red); transform: translateY(-2px); }
-  .hot-badge {
-    display: inline-block;
-    background: linear-gradient(135deg, var(--red), var(--orange));
-    color: white; font-size: 10px; font-weight: 800;
+  .search-wrap svg { width: 18px; height: 18px; fill: var(--text-dim); flex-shrink: 0; }
+  .search-wrap input {
+    background: none; border: none; outline: none;
+    color: var(--text); font-size: 14px; width: 100%;
+  }
+  .search-wrap input::placeholder { color: var(--text-dim); }
+
+  /* GRID 2 KOLOM */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+  .col {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .col-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,59,48,0.04);
+  }
+  .col-header h3 { font-size: 14px; font-weight: 800; color: var(--orange); }
+  .col-header .count {
+    background: rgba(255,59,48,0.15);
+    color: var(--red);
     padding: 3px 10px; border-radius: 20px;
-    letter-spacing: 0.5px; margin-bottom: 12px;
+    font-size: 11px; font-weight: 700;
   }
-  .hot-league { font-size: 11px; color: var(--text-dim); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.3px; }
-  .hot-teams { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
-  .hot-team { display: flex; align-items: center; gap: 10px; }
-  .team-logo {
-    width: 32px; height: 32px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 800; color: white; flex-shrink: 0;
-    border: 2px solid rgba(255,255,255,0.1);
-    object-fit: contain;
+  .col-body { max-height: 700px; overflow-y: auto; }
+  .col-body::-webkit-scrollbar { width: 6px; }
+  .col-body::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
+
+  /* LEAGUE GROUP */
+  .league-group { border-bottom: 1px solid var(--border); }
+  .league-group:last-child { border-bottom: none; }
+  .league-title {
+    padding: 10px 18px;
+    background: rgba(255,255,255,0.02);
+    font-size: 11px; font-weight: 800;
+    color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .league-title .flag { margin-right: 6px; }
+
+  /* MATCH ROW */
+  .match-row {
+    padding: 12px 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    display: flex; align-items: center; gap: 12px;
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+  .match-row:hover { background: var(--bg-card-hover); }
+  .match-row:last-child { border-bottom: none; }
+
+  .match-time-box {
+    min-width: 48px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .match-time-box .time {
+    font-size: 12px; font-weight: 700;
+    color: var(--text);
+  }
+  .match-time-box .date {
+    font-size: 10px; color: var(--text-dim);
+    margin-top: 2px;
+  }
+  .match-time-box.live .time { color: var(--red); }
+  .match-time-box.live .date { color: var(--red); font-weight: 700; }
+
+  .match-teams-col {
+    flex: 1;
+    display: flex; flex-direction: column; gap: 6px;
+    min-width: 0;
+  }
+  .match-team-row {
+    display: flex; align-items: center; gap: 8px;
+    min-width: 0;
+  }
+  .match-team-row .logo {
+    width: 20px; height: 20px;
+    border-radius: 50%;
     background: #fff;
-    padding: 2px;
+    object-fit: contain;
+    flex-shrink: 0;
+    padding: 1px;
   }
-  .team-logo-fallback {
+  .match-team-row .logo-fallback {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--red), var(--orange));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8px; font-weight: 800; color: white;
+    flex-shrink: 0;
+  }
+  .match-team-row .name {
+    font-size: 13px; font-weight: 600;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .match-score-box {
+    min-width: 40px;
+    text-align: right;
+    flex-shrink: 0;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .score-line {
+    font-size: 14px; font-weight: 800;
+    color: var(--text);
+  }
+  .score-line.live { color: var(--red); }
+  .score-line.empty { color: var(--text-dim); font-size: 12px; }
+
+  /* PREDIKSI */
+  .pred-row {
+    padding: 12px 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .pred-row:last-child { border-bottom: none; }
+  .pred-teams { flex: 1; min-width: 0; }
+  .pred-team {
+    font-size: 12px; font-weight: 600;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    margin-bottom: 3px;
+  }
+  .pred-team:last-child { margin-bottom: 0; }
+  .pred-score-box {
+    display: flex; align-items: center; gap: 6px;
+    flex-shrink: 0;
+  }
+  .pred-score {
     background: linear-gradient(135deg, var(--red), var(--orange));
     color: white;
-    padding: 0;
-    border: 2px solid rgba(255,255,255,0.1);
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 12px; font-weight: 800;
+    letter-spacing: 0.5px;
   }
-  .team-name { font-size: 14px; font-weight: 600; }
-  .hot-meta {
-    display: flex; justify-content: space-between; align-items: center;
-    padding-top: 12px; border-top: 1px solid var(--border);
-    font-size: 12px; color: var(--text-dim);
+  .pred-label {
+    font-size: 9px; color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 0.3px;
+    text-align: right;
   }
-  .status-badge {
-    display: inline-block; padding: 3px 10px; border-radius: 20px;
-    font-size: 10px; font-weight: 800; letter-spacing: 0.3px;
+
+  /* LOADING & ERROR */
+  .loading {
+    text-align: center; padding: 50px 20px;
+    color: var(--text-dim); font-size: 13px;
   }
-  .status-upcoming { background: rgba(255,149,0,0.15); color: var(--orange); }
-  .status-live { background: rgba(255,59,48,0.2); color: var(--red); animation: pulse 1.5s infinite; }
-  .status-ft { background: rgba(138,127,122,0.2); color: var(--text-dim); }
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-  .loading { text-align: center; padding: 60px 20px; color: var(--text-dim); }
   .spinner {
-    width: 40px; height: 40px;
-    border: 3px solid var(--border); border-top-color: var(--red);
-    border-radius: 50%; animation: spin 1s linear infinite;
-    margin: 0 auto 20px;
+    width: 32px; height: 32px;
+    border: 3px solid var(--border);
+    border-top-color: var(--red);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 14px;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
   .error {
     background: rgba(255,59,48,0.1);
-    border: 1px solid var(--red); color: var(--red);
-    padding: 16px; border-radius: 12px; text-align: center; font-size: 14px;
+    border: 1px solid var(--red);
+    color: var(--red);
+    padding: 14px; border-radius: 10px;
+    text-align: center; font-size: 13px;
+    margin: 20px;
   }
-  .league-group {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 14px; margin-bottom: 16px; overflow: hidden;
+  .empty {
+    text-align: center; padding: 40px 20px;
+    color: var(--text-dim); font-size: 13px;
   }
-  .league-header {
-    background: rgba(255,59,48,0.08);
-    padding: 12px 16px; font-size: 13px; font-weight: 800;
-    color: var(--orange); text-transform: uppercase;
-    letter-spacing: 0.5px; border-bottom: 1px solid var(--border);
-  }
-  .match-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 14px 16px; border-bottom: 1px solid var(--border); gap: 12px;
-  }
-  .match-row:last-child { border-bottom: none; }
-  .match-row:hover { background: var(--bg-card-hover); }
-  .match-teams { flex: 1; display: flex; flex-direction: column; gap: 8px; }
-  .match-team { display: flex; align-items: center; gap: 10px; }
-  .match-team .team-logo { width: 28px; height: 28px; font-size: 11px; }
-  .match-team .team-name { font-size: 14px; font-weight: 600; }
-  .match-info { text-align: right; display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
-  .match-time { font-size: 12px; color: var(--text-dim); }
-  .match-score { font-size: 16px; font-weight: 800; color: var(--red); }
-  @media (max-width: 600px) {
-    .hero h2 { font-size: 24px; }
-    .brand-text h1 { font-size: 16px; }
-    .nav a { padding: 6px 12px; font-size: 13px; }
+  .last-update {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 11px;
+    padding: 16px 0 8px;
   }
 </style>
 </head>
@@ -216,70 +316,62 @@
       </svg>
       <div class="brand-text">
         <h1>JadwalBolaPrediksi</h1>
-        <p>Jadwal & Prediksi Bola Terbaru</p>
+        <p>Live Score & Prediksi Bola</p>
       </div>
     </div>
-    <nav class="nav">
-      <a href="#top" class="active">Home</a>
-      <a href="#jadwal">Jadwal</a>
-      <a href="#prediksi">Prediksi</a>
-    </nav>
+    <div class="live-indicator">
+      <span class="live-dot"></span>
+      <span id="liveStatusText">LIVE UPDATE</span>
+    </div>
   </div>
 </div>
 
-<div class="container" id="top">
+<div class="container">
   <div class="hero">
     <div class="hero-label">⚡ UPDATE HARI INI</div>
     <h2>Jadwal & Prediksi <span>Bola Terbaru</span></h2>
-    <p>Temukan jadwal pertandingan dan prediksi skor dari berbagai liga dunia dalam satu tampilan.</p>
+    <p>Live score, jadwal pertandingan, dan prediksi skor dari berbagai liga dunia.</p>
     <div class="hero-stats">
-      <div class="stat">
-        <span class="stat-icon">📅</span>
-        <span class="stat-num" id="statMatches">-</span>
-        <span class="stat-label">Jadwal</span>
+      <div class="stat"><span class="stat-icon">📅</span><span class="stat-num" id="statMatches">-</span><span class="stat-label">Jadwal</span></div>
+      <div class="stat"><span class="stat-icon">🏆</span><span class="stat-num" id="statLeagues">-</span><span class="stat-label">Liga</span></div>
+      <div class="stat"><span class="stat-icon">🔴</span><span class="stat-num" id="statLive">-</span><span class="stat-label">Live</span></div>
+    </div>
+  </div>
+
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+    <input type="text" id="searchInput" placeholder="Cari nama tim atau liga...">
+  </div>
+
+  <div class="grid">
+    <div class="col">
+      <div class="col-header">
+        <h3>📅 JADWAL BOLA</h3>
+        <span class="count" id="countJadwal">0 Match</span>
       </div>
-      <div class="stat">
-        <span class="stat-icon">🏆</span>
-        <span class="stat-num" id="statLeagues">-</span>
-        <span class="stat-label">Liga</span>
+      <div class="col-body" id="jadwalBody">
+        <div class="loading"><div class="spinner"></div>Memuat jadwal...</div>
       </div>
-      <div class="stat">
-        <span class="stat-icon">🔥</span>
-        <span class="stat-num" id="statLive">-</span>
-        <span class="stat-label">Live</span>
+    </div>
+
+    <div class="col">
+      <div class="col-header">
+        <h3>🔮 PREDIKSI SKOR</h3>
+        <span class="count" id="countPrediksi">0 Match</span>
+      </div>
+      <div class="col-body" id="prediksiBody">
+        <div class="loading"><div class="spinner"></div>Memuat prediksi...</div>
       </div>
     </div>
   </div>
 
-  <div id="content">
-    <div class="loading">
-      <div class="spinner"></div>
-      <div>Memuat data pertandingan...</div>
-    </div>
-  </div>
-
-  <div class="section-title" id="prediksi" style="margin-top: 40px;">🔮 Prediksi Skor</div>
-  <div id="prediksiContent">
-    <div class="loading">
-      <div class="spinner"></div>
-      <div>Memuat prediksi...</div>
-    </div>
-  </div>
+  <div class="last-update" id="lastUpdate"></div>
 </div>
 
 <script>
   const WORKER_URL = "https://bola-api.rehantobing31.workers.dev";
-
-  const COLORS = [
-    "linear-gradient(135deg, #ff3b30, #ff9500)",
-    "linear-gradient(135deg, #e91e63, #ff5722)",
-    "linear-gradient(135deg, #ff6b35, #f7c59f)",
-    "linear-gradient(135deg, #d32f2f, #ff7043)",
-    "linear-gradient(135deg, #f44336, #ff9800)",
-    "linear-gradient(135deg, #c62828, #ef5350)",
-    "linear-gradient(135deg, #ff5722, #ffc107)",
-    "linear-gradient(135deg, #bf360c, #ff8a65)"
-  ];
+  const REFRESH_INTERVAL = 30000;
+  let allMatches = [];
 
   function getInitials(name) {
     if (!name) return "?";
@@ -288,133 +380,164 @@
     return (words[0][0] + words[1][0]).toUpperCase();
   }
 
-  function getTeamColor(name) {
-    if (!name) return COLORS[0];
-    let hash = 0;
-    for (let i = 0; i < name.length; i++) {
-      hash = name.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return COLORS[Math.abs(hash) % COLORS.length];
-  }
-
   function teamLogoHtml(name, logoUrl) {
     if (logoUrl) {
-      return '<img class="team-logo" src="' + logoUrl + '" alt="' + name + '" onerror="this.replaceWith(document.createRange().createContextualFragment(\'<div class=\\\'team-logo team-logo-fallback\\\' style=\\\'background:' + getTeamColor(name) + '\\\'>' + getInitials(name) + '</div>\'))">';
+      return '<img class="logo" src="' + logoUrl + '" alt="" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';"><div class="logo-fallback" style="display:none;">' + getInitials(name) + '</div>';
     }
-    return '<div class="team-logo team-logo-fallback" style="background:' + getTeamColor(name) + ';">' + getInitials(name) + '</div>';
+    return '<div class="logo-fallback">' + getInitials(name) + '</div>';
   }
 
-  function statusInfo(status) {
-    if (status === "LIVE") return { label: "🔴 LIVE", cls: "status-live" };
-    if (status === "FT") return { label: "FT", cls: "status-ft" };
-    return { label: "UPCOMING", cls: "status-upcoming" };
+  function formatTime(kickoff) {
+    if (!kickoff) return { time: "-", date: "" };
+    const parts = kickoff.split(",");
+    if (parts.length < 2) return { time: kickoff, date: "" };
+    return { time: parts[1].trim(), date: parts[0].trim() };
+  }
+
+  function statusClass(status) {
+    if (status === "LIVE") return "live";
+    return "";
+  }
+
+  function renderMatches(matches) {
+    const jadwalBody = document.getElementById("jadwalBody");
+    const prediksiBody = document.getElementById("prediksiBody");
+
+    if (!matches || matches.length === 0) {
+      jadwalBody.innerHTML = '<div class="empty">Belum ada pertandingan minggu ini.</div>';
+      prediksiBody.innerHTML = '<div class="empty">Belum ada prediksi.</div>';
+      return;
+    }
+
+    const leagues = new Set(matches.map(m => m.league));
+    const liveCount = matches.filter(m => m.status === "LIVE").length;
+    document.getElementById("statMatches").textContent = matches.length;
+    document.getElementById("statLeagues").textContent = leagues.size;
+    document.getElementById("statLive").textContent = liveCount;
+    document.getElementById("countJadwal").textContent = matches.length + " Match";
+    document.getElementById("countPrediksi").textContent = matches.length + " Match";
+
+    const groups = {};
+    matches.forEach(m => {
+      if (!groups[m.league]) groups[m.league] = [];
+      groups[m.league].push(m);
+    });
+
+    let jadwalHtml = "";
+    Object.keys(groups).sort().forEach(leagueName => {
+      jadwalHtml += '<div class="league-group">';
+      jadwalHtml += '<div class="league-title"><span>⚽ ' + leagueName + '</span><span>' + groups[leagueName].length + '</span></div>';
+      groups[leagueName].forEach(m => {
+        const t = formatTime(m.kickoff);
+        const isLive = m.status === "LIVE";
+        const isFT = m.status === "FT";
+
+        jadwalHtml += '<div class="match-row">';
+        jadwalHtml += '<div class="match-time-box ' + statusClass(m.status) + '">';
+        if (isLive) {
+          jadwalHtml += '<div class="time">LIVE</div>';
+          jadwalHtml += '<div class="date">' + t.date + '</div>';
+        } else if (isFT) {
+          jadwalHtml += '<div class="time">FT</div>';
+          jadwalHtml += '<div class="date">' + t.date + '</div>';
+        } else {
+          jadwalHtml += '<div class="time">' + t.time + '</div>';
+          jadwalHtml += '<div class="date">' + t.date + '</div>';
+        }
+        jadwalHtml += '</div>';
+
+        jadwalHtml += '<div class="match-teams-col">';
+        jadwalHtml += '<div class="match-team-row">' + teamLogoHtml(m.home_team, m.home_logo) + '<span class="name">' + m.home_team + '</span></div>';
+        jadwalHtml += '<div class="match-team-row">' + teamLogoHtml(m.away_team, m.away_logo) + '<span class="name">' + m.away_team + '</span></div>';
+        jadwalHtml += '</div>';
+
+        jadwalHtml += '<div class="match-score-box">';
+        if (m.score) {
+          const parts = m.score.split(" - ");
+          jadwalHtml += '<div class="score-line ' + (isLive ? "live" : "") + '">' + parts[0] + '</div>';
+          jadwalHtml += '<div class="score-line ' + (isLive ? "live" : "") + '">' + parts[1] + '</div>';
+        } else {
+          jadwalHtml += '<div class="score-line empty">-</div>';
+          jadwalHtml += '<div class="score-line empty">-</div>';
+        }
+        jadwalHtml += '</div>';
+
+        jadwalHtml += '</div>';
+      });
+      jadwalHtml += '</div>';
+    });
+
+    jadwalBody.innerHTML = jadwalHtml;
+
+    let predHtml = "";
+    Object.keys(groups).sort().forEach(leagueName => {
+      predHtml += '<div class="league-group">';
+      predHtml += '<div class="league-title"><span>⚽ ' + leagueName + '</span><span>' + groups[leagueName].length + '</span></div>';
+      groups[leagueName].forEach(m => {
+        const t = formatTime(m.kickoff);
+        const homeGoals = (Math.random() * 2.5 + 0.5).toFixed(1);
+        const awayGoals = (Math.random() * 2.5 + 0.5).toFixed(1);
+
+        predHtml += '<div class="pred-row">';
+        predHtml += '<div class="match-time-box">';
+        predHtml += '<div class="time">' + t.time + '</div>';
+        predHtml += '<div class="date">' + t.date + '</div>';
+        predHtml += '</div>';
+        predHtml += '<div class="pred-teams">';
+        predHtml += '<div class="pred-team">' + m.home_team + '</div>';
+        predHtml += '<div class="pred-team">' + m.away_team + '</div>';
+        predHtml += '</div>';
+        predHtml += '<div class="pred-score-box">';
+        predHtml += '<div class="pred-label">Skor<br>Prediksi</div>';
+        predHtml += '<div class="pred-score">' + homeGoals + ' - ' + awayGoals + '</div>';
+        predHtml += '</div>';
+        predHtml += '</div>';
+      });
+      predHtml += '</div>';
+    });
+
+    prediksiBody.innerHTML = predHtml;
+
+    const now = new Date();
+    document.getElementById("lastUpdate").textContent = "Update terakhir: " + now.toLocaleTimeString('id-ID');
+  }
+
+  function filterMatches(query) {
+    if (!query) return allMatches;
+    const q = query.toLowerCase();
+    return allMatches.filter(m =>
+      m.home_team.toLowerCase().includes(q) ||
+      m.away_team.toLowerCase().includes(q) ||
+      m.league.toLowerCase().includes(q)
+    );
   }
 
   async function loadMatches() {
-    const content = document.getElementById('content');
-    const prediksiContent = document.getElementById('prediksiContent');
-
     try {
-      const res = await fetch(WORKER_URL);
+      const res = await fetch(WORKER_URL + "?t=" + Date.now());
       const data = await res.json();
 
       if (data.error) {
-        content.innerHTML = '<div class="error">⚠️ ' + data.error + '</div>';
-        prediksiContent.innerHTML = '';
+        document.getElementById("jadwalBody").innerHTML = '<div class="error">⚠️ ' + data.error + '</div>';
+        document.getElementById("prediksiBody").innerHTML = '<div class="error">⚠️ ' + data.error + '</div>';
         return;
       }
 
-      const matches = data.matches || [];
-
-      if (matches.length === 0) {
-        content.innerHTML = '<div class="error">Belum ada pertandingan minggu ini.</div>';
-        prediksiContent.innerHTML = '';
-        return;
-      }
-
-      const leagues = new Set(matches.map(function(m) { return m.league; }));
-      const liveCount = matches.filter(function(m) { return m.status === "LIVE"; }).length;
-      document.getElementById('statMatches').textContent = matches.length;
-      document.getElementById('statLeagues').textContent = leagues.size;
-      document.getElementById('statLive').textContent = liveCount;
-
-      const hotMatches = matches.slice(0, 5);
-      let hotHtml = '<div class="section-title">🔥 Pertandingan Spesial</div>';
-      hotHtml += '<div class="hot-scroll">';
-      hotMatches.forEach(function(m) {
-        const st = statusInfo(m.status);
-        hotHtml += '<div class="hot-card">';
-        hotHtml += '<div class="hot-badge">BIG MATCH</div>';
-        hotHtml += '<div class="hot-league">' + m.league + '</div>';
-        hotHtml += '<div class="hot-teams">';
-        hotHtml += '<div class="hot-team">' + teamLogoHtml(m.home_team, m.home_logo) + '<div class="team-name">' + m.home_team + '</div></div>';
-        hotHtml += '<div class="hot-team">' + teamLogoHtml(m.away_team, m.away_logo) + '<div class="team-name">' + m.away_team + '</div></div>';
-        hotHtml += '</div>';
-        hotHtml += '<div class="hot-meta">';
-        hotHtml += '<span class="status-badge ' + st.cls + '">' + st.label + '</span>';
-        hotHtml += '<span>' + m.kickoff + '</span>';
-        hotHtml += '</div>';
-        hotHtml += '</div>';
-      });
-      hotHtml += '</div>';
-
-      const groups = {};
-      matches.forEach(function(m) {
-        if (!groups[m.league]) groups[m.league] = [];
-        groups[m.league].push(m);
-      });
-
-      let leagueHtml = '<div class="section-title" id="jadwal">📅 Jadwal Bola Terbaru</div>';
-
-      Object.keys(groups).forEach(function(leagueName) {
-        leagueHtml += '<div class="league-group">';
-        leagueHtml += '<div class="league-header">' + leagueName + ' (' + groups[leagueName].length + ')</div>';
-        groups[leagueName].slice(0, 10).forEach(function(m) {
-          const st = statusInfo(m.status);
-          leagueHtml += '<div class="match-row">';
-          leagueHtml += '<div class="match-teams">';
-          leagueHtml += '<div class="match-team">' + teamLogoHtml(m.home_team, m.home_logo) + '<div class="team-name">' + m.home_team + '</div></div>';
-          leagueHtml += '<div class="match-team">' + teamLogoHtml(m.away_team, m.away_logo) + '<div class="team-name">' + m.away_team + '</div></div>';
-          leagueHtml += '</div>';
-          leagueHtml += '<div class="match-info">';
-          leagueHtml += '<span class="status-badge ' + st.cls + '">' + st.label + '</span>';
-          if (m.score) {
-            leagueHtml += '<div class="match-score">' + m.score + '</div>';
-          } else {
-            leagueHtml += '<div class="match-time">' + m.kickoff + '</div>';
-          }
-          leagueHtml += '</div>';
-          leagueHtml += '</div>';
-        });
-        leagueHtml += '</div>';
-      });
-
-      content.innerHTML = hotHtml + leagueHtml;
-
-      let predHtml = '';
-      matches.slice(0, 5).forEach(function(m) {
-        const homeGoals = (Math.random() * 3).toFixed(1);
-        const awayGoals = (Math.random() * 3).toFixed(1);
-        predHtml += '<div class="match-row">';
-        predHtml += '<div class="match-teams">';
-        predHtml += '<div class="match-team">' + teamLogoHtml(m.home_team, m.home_logo) + '<div class="team-name">' + m.home_team + '</div></div>';
-        predHtml += '<div class="match-team">' + teamLogoHtml(m.away_team, m.away_logo) + '<div class="team-name">' + m.away_team + '</div></div>';
-        predHtml += '</div>';
-        predHtml += '<div class="match-info">';
-        predHtml += '<div style="font-size:11px;color:var(--text-dim);">PREDIKSI SKOR</div>';
-        predHtml += '<div class="match-score">' + homeGoals + ' - ' + awayGoals + '</div>';
-        predHtml += '</div>';
-        predHtml += '</div>';
-      });
-      prediksiContent.innerHTML = '<div class="league-group">' + predHtml + '</div>';
-
+      allMatches = data.matches || [];
+      const query = document.getElementById("searchInput").value;
+      renderMatches(filterMatches(query));
     } catch (error) {
-      content.innerHTML = '<div class="error">⚠️ Gagal memuat: ' + error.message + '</div>';
-      prediksiContent.innerHTML = '';
+      document.getElementById("jadwalBody").innerHTML = '<div class="error">⚠️ Gagal memuat: ' + error.message + '</div>';
+      document.getElementById("prediksiBody").innerHTML = '<div class="error">⚠️ Gagal memuat.</div>';
     }
   }
 
+  document.getElementById("searchInput").addEventListener("input", function(e) {
+    renderMatches(filterMatches(e.target.value));
+  });
+
   loadMatches();
+  setInterval(loadMatches, REFRESH_INTERVAL);
 </script>
 </body>
 </html>
